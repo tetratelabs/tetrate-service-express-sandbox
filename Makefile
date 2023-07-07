@@ -19,7 +19,30 @@ deploy_tetrate: deploy_tetrate_managementplane deploy_tetrate_controlplane ## De
 deploy_tetrate_%: 
 	@/bin/sh -c './make/tetrate_$*.sh deploy'
 
+.PHONY: destroy 
+destroy: destroy_infra destroy_local ## Destroy the complete demo stack
+
 .PHONY: destroy_infra
 destroy_infra: destroy_infra_aws ## Destroy the underlaying infrastructure
 destroy_infra_%: 
 	@/bin/sh -c './make/infra_$*.sh destroy'
+
+.PHONY: destroy_local
+destroy_local:  ## Destroy the local Terraform state and cache
+	@$(MAKE) destroy_tfstate
+	@$(MAKE) destroy_tfcache
+	@$(MAKE) destroy_outputs
+
+.PHONY: destroy_tfstate
+destroy_tfstate:
+	find . -name *tfstate* -exec rm -rf {} +
+
+.PHONY: destroy_tfcache
+destroy_tfcache:
+	find . -name .terraform -exec rm -rf {} +
+	find . -name .terraform.lock.hcl -delete
+
+.PHONY: destroy_outputs
+destroy_outputs:
+	rm -f outputs/*-kubeconfig.sh outputs/*-jumpbox.sh outputs/*-kubeconfig outputs/*.jwk outputs/*.pem outputs/*-cleanup.sh
+	rm -f outputs/terraform_outputs/*.json

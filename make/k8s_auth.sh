@@ -16,11 +16,11 @@ if [[ ${ACTION} = "refresh" ]]; then
 	for i in $(seq 1 ${AWS_K8S_CLUSTERS_COUNT}); do
 		index=$(($i - 1))
 		cluster_name=$(echo $AWS_K8S_CLUSTERS | jq -cr '.['$index'].name')
-		if [[ -z "$cluster_name" ]]; then
-			cluster_name="${NAME_PREFIX}-eks-${index}-${region}"
-		fi
 		region=$(echo $AWS_K8S_CLUSTERS | jq -cr '.['$index'].region')
 		k8s_version=$(echo $AWS_K8S_CLUSTERS | jq -cr '.['$index'].version')
+		if [[ "$cluster_name" == "null" ]]; then
+			cluster_name=$NAME_PREFIX-$index-$region
+		fi
 		terraform workspace new aws-$index-$region || true
 		terraform workspace select aws-$index-$region
 		terraform init
