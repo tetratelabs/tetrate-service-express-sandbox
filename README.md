@@ -15,12 +15,7 @@ The `Makefile` in this directory provides ability to fast-forward to any point o
 ```mermaid
   graph TD;
       all[make all] --> infra[make deploy_infra]
-      infra --> tetrate[make deploy_tetrate]
-      subgraph tetrate
-        tetrate_managementplane[make deploy_tetrate_managementplane]
-        tetrate_controlplane[make deploy_tetrate_controlplane]
-      subgraph addons
-        fluxcd[make fluxcd]
+      infra[make deploy_infra] --> tetrate[make deploy_tetrate]
       end
 ```
 
