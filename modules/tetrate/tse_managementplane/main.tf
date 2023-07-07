@@ -19,10 +19,6 @@ provider "kubernetes" {
   token                  = var.k8s_client_token
 }
 
-resource "random_password" "tetrate" {
-  length = 16
-}
-
 resource "helm_release" "managementplane" {
   name                = "managementplane"
   repository          = var.tetrate_helm_repository
@@ -31,11 +27,11 @@ resource "helm_release" "managementplane" {
   chart               = "managementplane"
   version             = var.tetrate_version
   namespace           = "tse"
+  create_namespace    = true
   timeout             = 1200
 
   values = [templatefile("${path.module}/manifests/tetrate/managementplane-values.yaml.tmpl", {
-    registry     = var.registry
-    tetrate_password = coalesce(var.tetrate_password, random_password.tetrate.result)
+    registry = var.registry
   })]
 }
 
@@ -47,7 +43,7 @@ resource "time_sleep" "wait_240_seconds" {
 data "kubernetes_service" "tetrate" {
   metadata {
     name      = "envoy"
-    namespace = "tetrate"
+    namespace = "tse"
   }
   depends_on = [time_sleep.wait_240_seconds]
 }

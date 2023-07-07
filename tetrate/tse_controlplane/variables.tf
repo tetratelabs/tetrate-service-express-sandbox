@@ -7,8 +7,7 @@ variable "region" {
 
 variable "k8s_cluster" {
   default = {
-    cloud      = "aws"
-    cluster_id = 0
+    cloud = "aws"
   }
 }
 

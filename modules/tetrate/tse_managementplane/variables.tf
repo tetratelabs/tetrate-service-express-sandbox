@@ -5,15 +5,12 @@ variable "tetrate_helm_repository" {
 }
 
 variable "tetrate_helm_repository_username" {
-  default = ""
 }
 
 variable "tetrate_helm_repository_password" {
-  default = ""
 }
 
 variable "tetrate_password" {
-  default = ""
 }
 
 variable "registry" {

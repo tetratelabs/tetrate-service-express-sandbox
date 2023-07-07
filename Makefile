@@ -15,7 +15,7 @@ deploy_infra_%:
 	@/bin/sh -c './make/infra_$*.sh deploy'
 
 .PHONY: deploy_tetrate
-deploy_tetrate: deploy_tetrate_managementplane ## Deploy a Tetrate Service Express management plane
+deploy_tetrate: deploy_tetrate_managementplane ## Deploy Tetrate Service Express
 deploy_tetrate_%: 
 	@/bin/sh -c './make/tetrate_$*.sh deploy'
 

@@ -1,5 +1,5 @@
 variable "name_prefix" {
-  type    = string
+  type        = string
   description = "name prefix"
 }
 
@@ -21,7 +21,7 @@ variable "k8s_version" {
 }
 
 variable "cidr" {
-  type    = string
+  type        = string
   description = "cidr"
   default     = "172.20.0.0/16"
 }
@@ -35,24 +35,24 @@ variable "output_path" {
 }
 
 variable "tetrate" {
-  type    = map
+  type    = map(any)
   default = {}
 }
 
 locals {
   tetrate_defaults = {
-    fqdn                 = "demo"
-    version              = "demo"
-    password             = "Tetrate123"
-    image_sync_username  = "demo"
-    image_sync_apikey    = "demo"
-    helm_repository      = "https://charts.dl.tetrate.io/public/helm/charts/"
-    tags                 = {
-      tetrate_owner      = "demo"
-      tetrate_team       = "demo"
-      tetrate_purpose    = "demo"
-      tetrate_lifespan   = "demo"
-      tetrate_customer   = "demo"
+    fqdn                = "demo"
+    version             = "demo"
+    password            = "Tetrate123"
+    image_sync_username = "demo"
+    image_sync_apikey   = "demo"
+    helm_repository     = "https://charts.dl.tetrate.io/public/helm/charts/"
+    tags = {
+      tetrate_owner    = "demo"
+      tetrate_team     = "demo"
+      tetrate_purpose  = "demo"
+      tetrate_lifespan = "demo"
+      tetrate_customer = "demo"
     }
   }
   tetrate = merge(local.tetrate_defaults, var.tetrate)
@@ -60,11 +60,11 @@ locals {
 
 locals {
   default_tags = {
-       "tetrate:owner"    = coalesce(local.tetrate.tags.tetrate_owner, replace(local.tetrate.image_sync_username, "/\\W+/", "-"))
-       "tetrate:team"     = local.tetrate.tags.tetrate_team
-       "tetrate:purpose"  = local.tetrate.tags.tetrate_purpose
-       "tetrate:lifespan" = local.tetrate.tags.tetrate_lifespan
-       "tetrate:customer" = local.tetrate.tags.tetrate_customer
-       "environment"      = var.name_prefix
+    "tetrate:owner"    = coalesce(local.tetrate.tags.tetrate_owner, replace(local.tetrate.image_sync_username, "/\\W+/", "-"))
+    "tetrate:team"     = local.tetrate.tags.tetrate_team
+    "tetrate:purpose"  = local.tetrate.tags.tetrate_purpose
+    "tetrate:lifespan" = local.tetrate.tags.tetrate_lifespan
+    "tetrate:customer" = local.tetrate.tags.tetrate_customer
+    "environment"      = var.name_prefix
   }
 }

@@ -1,29 +1,5 @@
-/usr/bin/env tctl config clusters set default --bridge-address ${tsb_mp_host}:443 --tls-insecure
-/usr/bin/env tctl config users set admin --org ${tsb_org} --username ${tsb_username} --password ${tsb_password} --tenant ${tsb_tenant}
-/usr/bin/env tctl config profiles set default --cluster="default" --username="admin"
+/usr/bin/env tctl config clusters set default --bridge-address ${tse_managementplane_hostname}:443 --tls-insecure
+/usr/bin/env tctl config users set admin --org tse --tenant tse  --username tse --password ${tetrate_password}
+/usr/bin/env tctl config profiles set default --cluster="default" --username="tse"
 /usr/bin/env tctl config profiles set-current "default"
-/usr/bin/env tctl apply -f ${cluster_name}-cluster.yaml
-/usr/bin/env tctl install cluster-service-account --cluster ${cluster_name} > ${cluster_name}-service-account.jwk
-/usr/bin/env tctl x gitops grant ${cluster_name}
-
-# Allow managing platform Roles with the cluster service account
-/usr/bin/env tctl get ab admin/rbac -o json > rbac.json
-if [ $? -eq 0 ]; then
-   if ! grep -q ${cluster_name} rbac.json; then
-    echo "Adding ${cluster_name} to existing RBAC policy..."
-    jq --arg cluster organizations/${tsb_org}/serviceaccounts/cluster-${cluster_name} '. | select(.spec.allow[].role=="rbac/admin").spec.allow[].subjects +=[{"serviceAccount":$cluster}]' rbac.json | tctl apply -f -
-   fi
-else
-  echo "Creating RBAC policy and adding ${cluster_name}..."
-  /usr/bin/env tctl apply -f - <<EOF
-apiVersion: rbac.tsb.tetrate.io/v2
-kind: AccessBindings
-metadata:
-  fqn: admin/rbac
-spec:
-  allow:
-  - role: rbac/admin
-    subjects:
-    - serviceAccount: organizations/${tsb_org}/serviceaccounts/cluster-${cluster_name}
-EOF
-fi
+/usr/bin/env tctl apply -f ${cluster_name}-cluster.yaml -o yaml | yq .spec.installTemplate.helm > ${cluster_name}-values.yaml

@@ -8,6 +8,6 @@ output "ingress_hostname" {
 }
 
 output "password" {
-  value     = coalesce(var.tetrate_password, random_password.tetrate.result)
-  sensitive = true
+  value     = coalesce(var.tetrate_password)
+  sensitive = false
 }
