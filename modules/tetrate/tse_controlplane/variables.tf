@@ -34,6 +34,9 @@ variable "tetrate_managementplane_hostname" {
 variable "tetrate_password" {
 }
 
+variable "registry" {
+}
+
 variable "k8s_host" {
 }
 

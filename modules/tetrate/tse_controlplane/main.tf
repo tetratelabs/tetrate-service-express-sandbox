@@ -54,6 +54,11 @@ resource "null_resource" "jumpbox_tctl" {
   }
 }
 
+data "local_file" "helm_values" {
+  filename   = "${var.output_path}/${var.cluster_name}-values.yaml"
+  depends_on = [null_resource.jumpbox_tctl]
+}
+
 resource "helm_release" "controlplane" {
   name                = "controlplane"
   repository          = var.tetrate_helm_repository
@@ -64,5 +69,7 @@ resource "helm_release" "controlplane" {
   namespace           = "istio-system"
   create_namespace    = true
   timeout             = 600
-  values              = [file("${var.output_path}/${var.cluster_name}-values.yaml")]
+  values              = [data.local_file.helm_values.content]
+
+  depends_on = [data.local_file.helm_values]
 }

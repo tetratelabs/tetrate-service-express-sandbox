@@ -1,4 +1,4 @@
-/usr/bin/env tctl config clusters set default --bridge-address ${tse_managementplane_hostname}:443 --tls-insecure
+/usr/bin/env tctl config clusters set default --bridge-address ${tetrate_managementplane_hostname}:443 --tls-insecure
 /usr/bin/env tctl config users set admin --org tse --tenant tse  --username tse --password ${tetrate_password}
 /usr/bin/env tctl config profiles set default --cluster="default" --username="tse"
 /usr/bin/env tctl config profiles set-current "default"

@@ -19,14 +19,14 @@ resource "aws_security_group" "jumpbox_sg" {
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  
+
   ingress {
     from_port   = 8443
     to_port     = 8443
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  
+
   ingress {
     from_port   = 9080
     to_port     = 9080
@@ -249,15 +249,15 @@ resource "aws_instance" "jumpbox" {
   }
 
   user_data = base64encode(templatefile("${path.module}/jumpbox.userdata", {
-    jumpbox_username              = var.jumpbox_username
-    tetrate_version               = var.tetrate_version
-    tetrate_image_sync_username   = var.tetrate_image_sync_username
-    tetrate_image_sync_apikey     = var.tetrate_image_sync_apikey
-    docker_login                  = "aws ecr get-login-password --region ${var.region} | docker login --username AWS --password-stdin ${var.registry}"
-    registry                      = var.registry
-    registry_name                 = var.registry_name
-    region                        = var.region
-    pubkey                        = tls_private_key.generated.public_key_openssh
+    jumpbox_username            = var.jumpbox_username
+    tetrate_version             = var.tetrate_version
+    tetrate_image_sync_username = var.tetrate_image_sync_username
+    tetrate_image_sync_apikey   = var.tetrate_image_sync_apikey
+    docker_login                = "aws ecr get-login-password --region ${var.region} | docker login --username AWS --password-stdin ${var.registry}"
+    registry                    = var.registry
+    registry_name               = var.registry_name
+    region                      = var.region
+    pubkey                      = tls_private_key.generated.public_key_openssh
   }))
   iam_instance_profile = aws_iam_instance_profile.jumpbox_iam_profile.name
 
@@ -273,14 +273,14 @@ resource "aws_instance" "jumpbox" {
 
 resource "local_file" "tetrateadmin_pem" {
   content         = tls_private_key.generated.private_key_pem
-  filename        = "${var.output_path}/${regex(".+-\\d+","${var.name_prefix}")}-aws-${var.jumpbox_username}.pem"
+  filename        = "${var.output_path}/${regex(".+-\\d+", "${var.name_prefix}")}-aws-${var.jumpbox_username}.pem"
   depends_on      = [tls_private_key.generated]
   file_permission = "0600"
 }
 
 resource "local_file" "ssh_jumpbox" {
-  content         = "ssh -i ${regex(".+-\\d+","${var.name_prefix}")}-aws-${var.jumpbox_username}.pem -l ${var.jumpbox_username} ${aws_instance.jumpbox.public_ip} \"@\""
-  filename        = "${var.output_path}/ssh-to-aws-${regex(".+-\\d+","${var.name_prefix}")}-jumpbox.sh"
+  content         = "ssh -i ${regex(".+-\\d+", "${var.name_prefix}")}-aws-${var.jumpbox_username}.pem -l ${var.jumpbox_username} ${aws_instance.jumpbox.public_ip}"
+  filename        = "${var.output_path}/ssh-to-aws-${regex(".+-\\d+", "${var.name_prefix}")}-jumpbox.sh"
   file_permission = "0755"
 }
 

@@ -2,6 +2,16 @@ variable "name_prefix" {
   description = "name prefix"
 }
 
+variable "cluster_id" {
+  type    = string
+  default = null
+}
+
+variable "cluster_name" {
+  type    = string
+  default = null
+}
+
 variable "region" {
 }
 
@@ -9,6 +19,14 @@ variable "k8s_cluster" {
   default = {
     cloud = "aws"
   }
+}
+
+variable "jumpbox_username" {
+  default = "tetrate-admin"
+}
+
+variable "output_path" {
+  default = "../../outputs"
 }
 
 variable "tetrate" {

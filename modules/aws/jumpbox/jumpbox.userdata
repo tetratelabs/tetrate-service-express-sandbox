@@ -29,6 +29,8 @@ write_files:
       #!/bin/bash
       curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
       install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+      curl -LO https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 &&
+      install -o root -g root -m 0755 yq /usr/bin/yq
       ${docker_login}
       curl -Lo "/usr/local/bin/tctl" "https://binaries.dl.tetrate.io/public/raw/versions/linux-amd64-${tetrate_version}/tctl"
       chmod +x "/usr/local/bin/tctl"
