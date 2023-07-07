@@ -47,24 +47,24 @@ locals {
     image_sync_username = "demo"
     image_sync_apikey   = "demo"
     helm_repository     = "https://charts.dl.tetrate.io/public/helm/charts/"
-    tags = {
-      tetrate_owner    = "demo"
-      tetrate_team     = "demo"
-      tetrate_purpose  = "demo"
-      tetrate_lifespan = "demo"
-      tetrate_customer = "demo"
-    }
   }
   tetrate = merge(local.tetrate_defaults, var.tetrate)
 }
 
+variable "tags" {
+  type    = map(any)
+  default = {}
+}
+
 locals {
-  default_tags = {
-    "tetrate:owner"    = coalesce(local.tetrate.tags.tetrate_owner, replace(local.tetrate.image_sync_username, "/\\W+/", "-"))
-    "tetrate:team"     = local.tetrate.tags.tetrate_team
-    "tetrate:purpose"  = local.tetrate.tags.tetrate_purpose
-    "tetrate:lifespan" = local.tetrate.tags.tetrate_lifespan
-    "tetrate:customer" = local.tetrate.tags.tetrate_customer
+  tags = {
+    "tetrate:owner"    = "demo"
+    "tetrate:team"     = "demo"
+    "tetrate:purpose"  = "demo"
+    "tetrate:lifespan" = "demo"
+    "tetrate:customer" = "demo"
     "environment"      = var.name_prefix
   }
+
+  default_tags = merge(local.tags, var.tags)
 }
