@@ -15,7 +15,13 @@ The `Makefile` in this directory provides ability to fast-forward to any point o
 ```mermaid
   graph TD;
       all[make all] --> infra[make deploy_infra]
-      infra[make deploy_infra] --> tetrate[make deploy_tetrate]
+      subgraph infra[make deploy_infra]
+        infra_aws[make deploy_infra_aws]
+      end
+      infra --> tetrate[make deploy_tetrate]
+      subgraph tetrate[make deploy_tetrate]
+         tetrate_managementplane[make deploy_tetrate_managementplane] -->
+         tetrate_controlplane[make deploy_tetrate_controlplane]
       end
 ```
 
@@ -39,11 +45,9 @@ git clone https://github.com/smarunich/tetrate-service-express-sandbox.git
 {
     "name_prefix": "<YOUR UNIQUE PREFIX NAME TO BE CREATED>",
     "tetrate": {
-        "fqdn": "<YOUR UNIQUE PREFIX NAME TO BE CREATED>.aws-ce.sandbox.tetrate.io",
-        "version": "1.7.0",
+        "version": "1.7.0-preview3+tse",
         "image_sync_username": "<TETRATE_REPO_USERNAME>",
-        "image_sync_apikey": "<TETRATE_REPO_APIKEY>",
-        "password": "Tetrate123"
+        "image_sync_apikey": "<TETRATE_REPO_APIKEY>"
     },
     "k8s_clusters": {
         "aws": [
@@ -66,25 +70,29 @@ git clone https://github.com/smarunich/tetrate-service-express-sandbox.git
 
 All `Make` commands should be executed from root of repo as this is where the `Makefile` is.
 
-1. a) Stand up full demo
+### Deploy the complete demo stack
 
 ```bash
 # Build full demo
 make all
 ```
 
-1. b) Decouple demo/Deploy in stages
+### Decouple demo deployment in stages
 
 ```bash
-# setup underlying clusters, registries, jumpboxes
-make k8s
+# Setup underlying clusters, registries, jumpboxes
+make deploy_infra
 
-# deploy tsb management plane
-make tsb_mp
+# Deploy Tetrate Service Express Management Plane
+make deploy_tetrate_managementplane
 
-# onboard deployed clusters (dataplane/controlplane)
-make tsb_cp
+# Onboard deployed clusters
+make deploy_tetrate_controlplane
+
+# Deploy demo applications
+make deploy_apps
 ```
+
 
 The completion of the above steps will result in:
 
@@ -92,11 +100,7 @@ The completion of the above steps will result in:
 - output kubeconfig files for all the created aks clusters in format of: $cluster_name-kubeconfig
 - output IP address and private key for the jumpbox (ssh username: tsbadmin), using shell scripts login to the jumpbox, for example to reach gcp jumpbox just run the script `ssh-to-gcp-jumpbox.sh`
 
-## Deployment Scenarios
-
-TBD
-
-## Use Cases and Addons
+### Application Scenarios and Use Cases
 
 * [FluxCD GitOps](./addons/README.md#fluxcd)
 
@@ -113,19 +117,20 @@ For a quicker destroy for development purposes, you can:
 - manually delete the clusters via CLI or web consoles
 - run `make destroy_local` to delete the terraform data
 
-## Usage notes
+### Usage notes
 
 - Terraform destroys only the resources it created (`make destroy`)
 - Terraform stores the `state` across workspaces in different folders locally
 - Cleanup of aws objects created by K8s load balancer services (ELB+SGs) is automated, however based on AWS API timeouts it may require manual cleanup
 
+
 ### Repository structure
 
 | Directory | Description |
 | --------- | ----------- |
-| [addons](addons) | Terraform modules to deploy optional add-ons such as ArgoCD or the TSB monitoring stack. |
 | [infra](infra) | Infrastructure deployment modules. Provisioning of networking, jumpboxes and k8s clusters. |
-| [make](make) | Makefile helpers. |
+| [tetrate](tetrate) | Tetrate terraform modules to deploy Tetrate Service Express. |
+| [addons](addons) | Terraform modules to deploy optional addons such as FluxCD, etc. |
 | [modules](modules) | Generic and reusable terraform modules. These should not contain any specific configuration. |
+| [make](make) | Makefile helpers. |
 | [outputs](outputs) | Terraform output values for the provisioned modules. |
-| [tetrate](tetrate) | TSB Terraform modules to deploy the TSB MP and TSB CPs. |
