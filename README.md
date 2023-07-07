@@ -23,6 +23,10 @@ The `Makefile` in this directory provides ability to fast-forward to any point o
          tetrate_managementplane[make deploy_tetrate_managementplane] -->
          tetrate_controlplane[make deploy_tetrate_controlplane]
       end
+      tetrate --> apps[make deploy_apps]
+      subgraph apps[make deploy_apps]
+         fluxcd[make deploy_apps_fluxcd]
+      end
 ```
 
 # Getting Started
