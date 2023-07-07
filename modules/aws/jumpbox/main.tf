@@ -203,12 +203,12 @@ resource "tls_private_key" "generated" {
   rsa_bits  = 4096
 }
 
-resource "aws_key_pair" "tsbadmin_key_pair" {
+resource "aws_key_pair" "tetrateadmin_key_pair" {
   key_name   = "${var.name_prefix}_generated"
   public_key = tls_private_key.generated.public_key_openssh
 
   tags = merge(var.tags, {
-    Name = "${var.name_prefix}_tsbadmin_key"
+    Name = "${var.name_prefix}_tetrateadmin_key"
   })
 }
 
@@ -231,25 +231,12 @@ data "aws_ami" "ubuntu" {
 
 data "aws_availability_zones" "available" {}
 
-module "internal_registry" {
-  source      = "../../internal_registry"
-  tsb_version = var.tsb_version
-  # The internal registry token is needed only if the TSB version is a development version, and only once when the
-  # jumpbox bootstraps the first time. It is not needed later as all images are already pushed to the registry (and
-  # cloud-init won't run again anyway).
-  # Since the token is short-lived, successive calls to this module would cause the jumpbox to reconcile, restart, and
-  # eventually changing the IP address, etc, unnecessarily.
-  # By setting this, subsequent calls to this module will return the token returned on the initial run, if present, avoiding
-  # the jumbox reconcile.
-  cached_by   = "${var.name_prefix}-internal-registry.tfstate.tokencache"
-}
-
 resource "aws_instance" "jumpbox" {
   ami               = data.aws_ami.ubuntu.id
   availability_zone = data.aws_availability_zones.available.names[0]
   instance_type     = "t2.medium"
 
-  key_name                    = aws_key_pair.tsbadmin_key_pair.key_name
+  key_name                    = aws_key_pair.tetrateadmin_key_pair.key_name
   vpc_security_group_ids      = [aws_security_group.jumpbox_sg.id]
   subnet_id                   = var.vpc_subnet
   associate_public_ip_address = true
@@ -262,18 +249,15 @@ resource "aws_instance" "jumpbox" {
   }
 
   user_data = base64encode(templatefile("${path.module}/jumpbox.userdata", {
-    jumpbox_username          = var.jumpbox_username
-    tsb_version               = var.tsb_version
-    tsb_image_sync_username   = var.tsb_image_sync_username
-    tsb_image_sync_apikey     = var.tsb_image_sync_apikey
-    docker_login              = "aws ecr get-login-password --region ${var.region} | docker login --username AWS --password-stdin ${var.registry}"
-    registry                  = var.registry
-    registry_name             = var.registry_name
-    region                    = var.region
-    pubkey                    = tls_private_key.generated.public_key_openssh
-    tsb_helm_repository       = var.tsb_helm_repository
-    tetrate_internal_cr       = module.internal_registry.internal_cr
-    tetrate_internal_cr_token = module.internal_registry.internal_cr_token
+    jumpbox_username              = var.jumpbox_username
+    tetrate_version               = var.tetrate_version
+    tetrate_image_sync_username   = var.tetrate_image_sync_username
+    tetrate_image_sync_apikey     = var.tetrate_image_sync_apikey
+    docker_login                  = "aws ecr get-login-password --region ${var.region} | docker login --username AWS --password-stdin ${var.registry}"
+    registry                      = var.registry
+    registry_name                 = var.registry_name
+    region                        = var.region
+    pubkey                        = tls_private_key.generated.public_key_openssh
   }))
   iam_instance_profile = aws_iam_instance_profile.jumpbox_iam_profile.name
 
@@ -287,7 +271,7 @@ resource "aws_instance" "jumpbox" {
 
 }
 
-resource "local_file" "tsbadmin_pem" {
+resource "local_file" "tetrateadmin_pem" {
   content         = tls_private_key.generated.private_key_pem
   filename        = "${var.output_path}/${regex(".+-\\d+","${var.name_prefix}")}-aws-${var.jumpbox_username}.pem"
   depends_on      = [tls_private_key.generated]

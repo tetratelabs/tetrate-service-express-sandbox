@@ -1,5 +1,6 @@
 data "aws_region" "current" {}
-resource "aws_vpc" "tsb" {
+
+resource "aws_vpc" "tetrate" {
   cidr_block           = var.cidr
   enable_dns_hostnames = true
   tags = merge(var.tags, {
@@ -9,19 +10,19 @@ resource "aws_vpc" "tsb" {
 
 data "aws_availability_zones" "available" {}
 
-resource "aws_subnet" "tsb" {
+resource "aws_subnet" "tetrate" {
   count                   = min(length(data.aws_availability_zones.available.names), var.min_az_count, var.max_az_count)
   availability_zone       = data.aws_availability_zones.available.names[count.index]
   cidr_block              = cidrsubnet(var.cidr, 4, count.index)
-  vpc_id                  = aws_vpc.tsb.id
+  vpc_id                  = aws_vpc.tetrate.id
   map_public_ip_on_launch = "true"
   tags = merge(var.tags, {
     Name = "${var.name_prefix}_subnet_${data.aws_availability_zones.available.names[count.index]}"
   })
 }
 
-resource "aws_internet_gateway" "tsb" {
-  vpc_id = aws_vpc.tsb.id
+resource "aws_internet_gateway" "tetrate" {
+  vpc_id = aws_vpc.tetrate.id
   tags = merge(var.tags, {
     Name = "${var.name_prefix}_igw"
   })
@@ -29,11 +30,11 @@ resource "aws_internet_gateway" "tsb" {
 
 
 resource "aws_route_table" "rt" {
-  vpc_id = aws_vpc.tsb.id
+  vpc_id = aws_vpc.tetrate.id
 
   route {
     cidr_block = "0.0.0.0/0"
-    gateway_id = aws_internet_gateway.tsb.id
+    gateway_id = aws_internet_gateway.tetrate.id
   }
 
   tags = merge(var.tags, {
@@ -44,7 +45,7 @@ resource "aws_route_table" "rt" {
 
 resource "aws_route_table_association" "rta" {
   count          = min(length(data.aws_availability_zones.available.names), var.min_az_count, var.max_az_count)
-  subnet_id      = element(aws_subnet.tsb.*.id, count.index)
+  subnet_id      = element(aws_subnet.tetrate.*.id, count.index)
   route_table_id = aws_route_table.rt.id
 }
 
@@ -55,8 +56,8 @@ resource "random_string" "random" {
   upper   = false
 }
 
-resource "aws_ecr_repository" "tsb" {
-  name                 = replace("tsbecr${var.name_prefix}${random_string.random.result}","-","")
+resource "aws_ecr_repository" "tetrate" {
+  name                 = replace("tetrateecr${var.name_prefix}${random_string.random.result}","-","")
   image_scanning_configuration {
     scan_on_push = true
   }
@@ -81,15 +82,15 @@ resource "null_resource" "aws_cleanup" {
     on_failure = continue
   }
 
-  depends_on = [ aws_internet_gateway.tsb, local_file.aws_cleanup ]
+  depends_on = [ aws_internet_gateway.tetrate, local_file.aws_cleanup ]
 
 }
 
 resource "local_file" "aws_cleanup" {
   content = templatefile("${path.module}/aws_cleanup.sh.tmpl", {
-    vpc_id        = aws_vpc.tsb.id
+    vpc_id        = aws_vpc.tetrate.id
     region        = data.aws_region.current.name
-    registry_name = aws_ecr_repository.tsb.name
+    registry_name = aws_ecr_repository.tetrate.name
   })
   filename        = "${var.output_path}/${var.name_prefix}-aws-cleanup.sh"
   file_permission = "0755"

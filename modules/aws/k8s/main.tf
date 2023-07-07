@@ -47,7 +47,7 @@ module "eks" {
   }
 
   eks_managed_node_groups = {
-    tsb_sandbox_blue = {
+    tetrate_sandbox_blue = {
       min_size     = 3
       max_size     = 5
       desired_size = 3
@@ -90,11 +90,6 @@ module "eks" {
 
   putin_khuylo = true
 
-}
-
-data "aws_eks_cluster" "cluster" {
-  name       = var.cluster_name
-  depends_on = [module.eks]
 }
 
 data "aws_eks_cluster_auth" "cluster" {

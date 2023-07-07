@@ -1,21 +1,21 @@
 output "vpc_id" {
-  value = aws_vpc.tsb.id
+  value = aws_vpc.tetrate.id
 }
 
 output "vpc_subnets" {
-  value = aws_subnet.tsb.*.id
+  value = aws_subnet.tetrate.*.id
 }
 
 output "registry" {
-  value = aws_ecr_repository.tsb.repository_url
+  value = aws_ecr_repository.tetrate.repository_url
 }
 
 output "registry_name" {
-  value = aws_ecr_repository.tsb.name
+  value = aws_ecr_repository.tetrate.name
 }
 
 output "registry_id" {
-  value = aws_ecr_repository.tsb.registry_id
+  value = aws_ecr_repository.tetrate.registry_id
 }
 
 output "registry_username" {

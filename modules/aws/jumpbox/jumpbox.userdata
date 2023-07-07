@@ -16,7 +16,7 @@ packages:
 users:
   - default
   - name: ${jumpbox_username}
-    gecos: TSB
+    gecos: tetrate
     lock_passwd: true
     shell: /bin/bash
     sudo: ALL=(ALL) NOPASSWD:ALL
@@ -30,32 +30,14 @@ write_files:
       curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
       install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
       ${docker_login}
-      if [[ ! -z "${tetrate_internal_cr}" ]]; then
-        curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
-        helm repo add tetrate-tsb-helm "${tsb_helm_repository}"
-        helm repo update
-        curl -Lo "/usr/local/bin/tctl" "https://binaries.dl.tetrate.io/public/raw/versions/linux-amd64-next/tctl"
-        chmod +x "/usr/local/bin/tctl"
-        helm pull tetrate-tsb-helm/managementplane --version ${tsb_version} --devel
-        tar zxvf managementplane-${tsb_version}.tgz
-        for IMAGE in $(cut -d/ -f2- managementplane/images.txt)
-        do
-          IMGNAME=$(echo $IMAGE | cut -d: -f1)
-          aws ecr create-repository --repository-name ${registry_name}/$IMGNAME --region ${region} || true
-          skopeo copy --src-registry-token "${tetrate_internal_cr_token}" --dest-authfile /root/.docker/config.json \
-            docker://${tetrate_internal_cr}/$IMAGE \
-            docker://${registry}/$IMAGE &
-        done
-      else
-        curl -Lo "/usr/local/bin/tctl" "https://binaries.dl.tetrate.io/public/raw/versions/linux-amd64-${tsb_version}/tctl"
-        chmod +x "/usr/local/bin/tctl"
-        tctl install image-sync \
-          --username "${tsb_image_sync_username}" \
-          --apikey "${tsb_image_sync_apikey}" \
-          --registry ${registry} \
-          --accept-eula \
-          --parallel
-      fi
+      curl -Lo "/usr/local/bin/tctl" "https://binaries.dl.tetrate.io/public/raw/versions/linux-amd64-${tetrate_version}/tctl"
+      chmod +x "/usr/local/bin/tctl"
+      tctl install image-sync \
+        --username "${tetrate_image_sync_username}" \
+        --apikey "${tetrate_image_sync_apikey}" \
+        --registry ${registry} \
+        --accept-eula \
+        --parallel
       touch /tmp/cloud-init.done
     path: /opt/bootstrap.sh
     permissions: 0755

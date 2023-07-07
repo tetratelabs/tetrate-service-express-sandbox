@@ -1,1 +1,0 @@
-# helm charts location placeholder
