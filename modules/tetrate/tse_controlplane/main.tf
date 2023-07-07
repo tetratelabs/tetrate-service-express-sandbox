@@ -69,14 +69,12 @@ resource "helm_release" "controlplane" {
   namespace           = "istio-system"
   create_namespace    = true
   timeout             = 600
-  values = [
-    file("${var.output_path}/${var.cluster_name}-values.yaml")
-  ]
+  values              = [data.local_file.helm_values.content]
 
   set {
     name  = "image.registry"
     value = var.registry
   }
 
-  depends_on = [data.local_file.helm_values]
+  depends_on = [null_resource.jumpbox_tctl, data.local_file.helm_values]
 }

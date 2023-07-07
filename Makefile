@@ -19,7 +19,7 @@ deploy_tetrate: deploy_tetrate_managementplane deploy_tetrate_controlplane ## De
 deploy_tetrate_%: 
 	@/bin/sh -c './make/tetrate_$*.sh deploy'
 
-.PHONY: destroy 
+.PHONY: destroy
 destroy: destroy_infra destroy_local ## Destroy the complete demo stack
 
 .PHONY: destroy_infra
