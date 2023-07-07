@@ -16,6 +16,9 @@ if [[ ${ACTION} = "deploy" ]]; then
 	export AWS_K8S_CLUSTERS=$(echo ${TFVARS} | jq -c ".k8s_clusters.aws")
 	index=0 # Install MP on the first cluster from the list
 	cluster_name=$(echo $AWS_K8S_CLUSTERS | jq -cr '.['$index'].name')
+	if [[ -z "$cluster_name" ]]; then
+		cluster_name="${NAME_PREFIX}-eks-${index}-${region}"
+	fi
 	region=$(echo $AWS_K8S_CLUSTERS | jq -cr '.['$index'].region')
 		terraform workspace select default
 		terraform init

@@ -43,4 +43,5 @@ outputs/terraform_outputs/*
 outputs/*.json
 outputs/*.pem
 outputs/*.sh
+outputs/*-values.yaml
 !outputs/README.md

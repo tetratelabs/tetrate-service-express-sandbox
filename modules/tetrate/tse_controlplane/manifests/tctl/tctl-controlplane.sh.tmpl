@@ -1,5 +1,5 @@
-/usr/bin/env tctl config clusters set default --bridge-address ${tetrate_managementplane_hostname}:443 --tls-insecure
-/usr/bin/env tctl config users set admin --org tse --tenant tse  --username tse --password ${tetrate_password}
-/usr/bin/env tctl config profiles set default --cluster="default" --username="tse"
-/usr/bin/env tctl config profiles set-current "default"
+/usr/bin/env tctl config clusters set tse --bridge-address ${tetrate_managementplane_hostname}:443 --tls-insecure
+/usr/bin/env tctl config users set tse --username tse --password ${tetrate_password} --org "tse" --tenant "tse"
+/usr/bin/env tctl config profiles set tse --cluster tse --username tse
+/usr/bin/env tctl config profiles set-current tse
 /usr/bin/env tctl apply -f ${cluster_name}-cluster.yaml -o yaml | yq .spec.installTemplate.helm > ${cluster_name}-values.yaml

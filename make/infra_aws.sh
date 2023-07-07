@@ -5,7 +5,7 @@ export ROOT_DIR="$(
 	cd -- "$(dirname "${0}")" >/dev/null 2>&1
 	pwd -P
 )"
-source ${ROOT_DIR}/variables.sh
+source "${ROOT_DIR}/variables.sh"
 
 export ACTION=${1}
 
@@ -16,6 +16,9 @@ if [[ ${ACTION} = "deploy" ]]; then
 	for i in $(seq 1 ${AWS_K8S_CLUSTERS_COUNT}); do
 		index=$(($i - 1))
 		cluster_name=$(echo $AWS_K8S_CLUSTERS | jq -cr '.['$index'].name')
+		if [[ -z "$cluster_name" ]]; then
+			cluster_name="${NAME_PREFIX}-eks-${index}-${region}"
+		fi
 		region=$(echo $AWS_K8S_CLUSTERS | jq -cr '.['$index'].region')
 		k8s_version=$(echo $AWS_K8S_CLUSTERS | jq -cr '.['$index'].version')
 		terraform workspace new aws-$index-$region || true

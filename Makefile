@@ -15,10 +15,9 @@ deploy_infra_%:
 	@/bin/sh -c './make/infra_$*.sh deploy'
 
 .PHONY: deploy_tetrate
-deploy_tetrate: deploy_tetrate_managementplane ## Deploy Tetrate Service Express
+deploy_tetrate: deploy_tetrate_managementplane deploy_tetrate_controlplane ## Deploy Tetrate Service Express
 deploy_tetrate_%: 
 	@/bin/sh -c './make/tetrate_$*.sh deploy'
-
 
 .PHONY: destroy_infra
 destroy_infra: destroy_infra_aws ## Destroy the underlaying infrastructure

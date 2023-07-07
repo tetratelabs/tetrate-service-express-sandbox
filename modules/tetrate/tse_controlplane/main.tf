@@ -50,7 +50,7 @@ resource "null_resource" "jumpbox_tctl" {
 
   # file-remote is not supported yet, https://github.com/hashicorp/terraform/issues/3379
   provisioner "local-exec" {
-    command = "scp -oStrictHostKeyChecking=no -oIdentitiesOnly=yes -oUserKnownHostsFile=/dev/null -i ${var.output_path}/${var.name_prefix}-${var.cloud}-${var.jumpbox_username}.pem  ${var.jumpbox_username}@${var.jumpbox_host}:${var.cluster_name}-service-account.jwk ${var.output_path}/${var.cluster_name}-values.yaml"
+    command = "scp -oStrictHostKeyChecking=no -oIdentitiesOnly=yes -oUserKnownHostsFile=/dev/null -i ${var.output_path}/${var.name_prefix}-${var.cloud}-${var.jumpbox_username}.pem  ${var.jumpbox_username}@${var.jumpbox_host}:${var.cluster_name}-values.yaml ${var.output_path}/${var.cluster_name}-values.yaml"
   }
 }
 
@@ -69,7 +69,14 @@ resource "helm_release" "controlplane" {
   namespace           = "istio-system"
   create_namespace    = true
   timeout             = 600
-  values              = [data.local_file.helm_values.content]
+  values = [
+    file("${var.output_path}/${var.cluster_name}-values.yaml")
+  ]
+
+  set {
+    name  = "image.registry"
+    value = var.registry
+  }
 
   depends_on = [data.local_file.helm_values]
 }
