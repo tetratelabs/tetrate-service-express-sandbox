@@ -27,7 +27,3 @@ provider "kubectl" {
   token                  = data.terraform_remote_state.infra.outputs.token
   load_config_file       = false
 }
-
-provider "azurerm" {
-  features {}
-}

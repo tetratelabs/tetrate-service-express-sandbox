@@ -7,8 +7,11 @@ source ${ROOT_DIR}/variables.sh ;
 export ACTION=${1} ;
 
 if [[ ${ACTION} = "deploy" ]]; then
-  cd "${ROOT_DIR}/../infra/aws";
+  cd "${ROOT_DIR}/../tetrate/tse_managementplane";
   export AWS_K8S_CLUSTERS=$(echo ${TFVARS} | jq -c ".k8s_clusters.aws");
+	index=0 # Install MP on the first cluster from the list
+  cluster_name=$(echo $AWS_K8S_CLUSTERS | jq -cr '.['$index'].name');
+  region=$(echo $AWS_K8S_CLUSTERS | jq -cr '.['$index'].region');
   export AWS_K8S_CLUSTERS_COUNT=$(echo ${AWS_K8S_CLUSTERS} | jq length);
   for i in $(seq 1 ${AWS_K8S_CLUSTERS_COUNT}); 
 	do

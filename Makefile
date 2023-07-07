@@ -10,9 +10,15 @@ help: Makefile ## Print help
 			/^[.a-zA-Z0-9_-]+:.*?##/ { printf "  \033[36mmake %-15s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 
 .PHONY: deploy_infra
-deploy_infra: deploy_infra_aws ## Deploy the underlaying infrastructure
+deploy_infra: deploy_infra_aws ## Deploy an underlaying infrastructure
 deploy_infra_%: 
 	@/bin/sh -c './make/infra_$*.sh deploy'
+
+.PHONY: deploy_tetrate
+deploy_tetrate: deploy_tetrate_managementplane ## Deploy a Tetrate Service Express management plane
+deploy_tetrate_%: 
+	@/bin/sh -c './make/tetrate_$*.sh deploy'
+
 
 .PHONY: destroy_infra
 destroy_infra: destroy_infra_aws ## Destroy the underlaying infrastructure

@@ -42,23 +42,28 @@ git clone https://github.com/smarunich/tetrate-service-express-sandbox.git
 
 ```json
 {
-  "name_prefix": "<YOUR UNIQUE PREFIX NAME TO BE CREATED>",
-  "dns_provider": "azure",
-  "tsb_fqdn": "<YOUR UNIQUE PREFIX NAME TO BE CREATED>.azure.sandbox.tetrate.io",
-  "tsb_version": "1.6.0",
-  "tsb_image_sync_username": "<TSB_REPO_USERNAME>",
-  "tsb_image_sync_apikey": "<TSB_REPO_APIKEY>",
-  "tsb_password": "Tetrate123",
-  "tsb_mp": {
-    "cloud": "azure",
-    "cluster_id": 0
-  },
-  "tsb_org": "tetrate",
-  "aws_k8s_regions": [],
-  "azure_k8s_regions": ["eastus"],
-  "gcp_k8s_regions": ["us-west1", "us-east1"],
-  "tetrate_owner": "Change me! (https://github.com/tetrateio/tetrate/blob/master/cloud/docs/gcp/labels.md)",
-  "tetrate_team": "Change me! (https://github.com/tetrateio/tetrate/blob/master/cloud/docs/gcp/labels.md)"
+    "name_prefix": "<YOUR UNIQUE PREFIX NAME TO BE CREATED>",
+    "tetrate": {
+        "fqdn": "<YOUR UNIQUE PREFIX NAME TO BE CREATED>.aws-ce.sandbox.tetrate.io",
+        "version": "1.7.0",
+        "image_sync_username": "<TETRATE_REPO_USERNAME>",
+        "image_sync_apikey": "<TETRATE_REPO_APIKEY>",
+        "password": "Tetrate123"
+    },
+    "k8s_clusters": {
+        "aws": [
+        {
+            "name": "demo1",
+            "region": "us-west-1",
+            "version": "1.23"
+        },
+        {
+            "name": "demo2",
+            "region": "us-west-1",
+            "version": "1.23"
+        } 
+    ]
+    }
 }
 ```
 

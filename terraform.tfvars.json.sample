@@ -2,7 +2,7 @@
     "name_prefix": "<YOUR UNIQUE PREFIX NAME TO BE CREATED>",
     "tetrate": {
         "fqdn": "<YOUR UNIQUE PREFIX NAME TO BE CREATED>.aws-ce.sandbox.tetrate.io",
-        "version": "1.6.0",
+        "version": "1.7.0",
         "image_sync_username": "<TETRATE_REPO_USERNAME>",
         "image_sync_apikey": "<TETRATE_REPO_APIKEY>",
         "password": "Tetrate123"
@@ -15,7 +15,7 @@
             "version": "1.23"
         },
         {
-            "name": "demo1",
+            "name": "demo2",
             "region": "us-west-1",
             "version": "1.23"
         } 

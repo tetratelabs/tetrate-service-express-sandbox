@@ -1,37 +1,15 @@
 variable "name_prefix" {
-  type    = string
   description = "name prefix"
-}
-
-variable "cluster_id" {
-  type    = string
-  default = null
-}
-
-variable "cluster_name" {
-  type    = string
-  default = null
 }
 
 variable "region" {
 }
 
-variable "k8s_version" {
-  default = "1.23"
-}
-
-variable "cidr" {
-  type    = string
-  description = "cidr"
-  default     = "172.20.0.0/16"
-}
-
-variable "jumpbox_username" {
-  default = "tetrate-admin"
-}
-
-variable "output_path" {
-  default = "../../outputs"
+variable "k8s_cluster" {
+  default = {
+    cloud      = "aws"
+    cluster_id = 0
+  }
 }
 
 variable "tetrate" {
