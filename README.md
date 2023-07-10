@@ -16,14 +16,10 @@ The `Makefile` in this directory provides ability to fast-forward to any point o
   graph TD;
       all[make all] --> infra[make deploy_infra]
       subgraph infra[make deploy_infra]
-        infra_aws[make deploy_infra_aws]
-      end
-      infra --> addons[make deploy_addons]
-      subgraph addons[make deploy_addons]
+        infra_aws[make deploy_infra_aws] -->
          aws-load-balancer-controller[make deploy_addons_aws-load-balancer-controller] -->
          fluxcd[make deploy_addons_fluxcd]
-      end
-      addons --> tetrate[make deploy_tetrate]
+      infra --> tetrate[make deploy_tetrate]
       subgraph tetrate[make deploy_tetrate]
          tetrate_managementplane[make deploy_tetrate_managementplane] -->
          tetrate_controlplane[make deploy_tetrate_controlplane]
