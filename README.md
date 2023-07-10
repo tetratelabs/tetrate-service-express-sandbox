@@ -134,7 +134,7 @@ For a quicker destroy for development purposes, you can:
 | --------- | ----------- |
 | [infra](infra) | Infrastructure deployment modules. Provisioning of networking, jumpboxes and k8s clusters. |
 | [tetrate](tetrate) | Tetrate terraform modules to deploy Tetrate Service Express. |
-| [addons](addons) | Terraform modules to deploy optional addons such as FluxCD, etc. |
+| [addons](addons) | Terraform modules to deploy addons such as FluxCD, etc. |
 | [modules](modules) | Generic and reusable terraform modules. These should not contain any specific configuration. |
 | [make](make) | Makefile helpers. |
 | [outputs](outputs) | Terraform output values for the provisioned modules. |
