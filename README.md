@@ -26,6 +26,7 @@ The `Makefile` in this directory provides ability to fast-forward to any point o
          tetrate_controlplane[make deploy_tetrate_controlplane]
       end
       tetrate --> apps[make deploy_apps]
+      apps --> describe[make describe_demo]
 ```
 
 # Getting Started
@@ -95,6 +96,9 @@ make deploy_tetrate_controlplane
 
 # Deploy demo applications
 make deploy_apps
+
+# Describe the complete demo stack
+make describe_demo
 ```
 
 
