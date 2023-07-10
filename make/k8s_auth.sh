@@ -24,7 +24,7 @@ if [[ ${ACTION} = "refresh" ]]; then
 		terraform workspace new aws-$index-$region || true
 		terraform workspace select aws-$index-$region
 		terraform init
-		terraform apply ${TERRAFORM_APPLY_ARGS} -var-file="../../../terraform.tfvars.json" -var=cluster_id=$index -var=region=$region
+		terraform apply ${TERRAFORM_APPLY_ARGS} -var-file="../../../terraform.tfvars.json" -var=cluster_id=$index -var=region=$region || true
 		terraform workspace select default
 	done
 	cd "../../.."
