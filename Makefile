@@ -2,7 +2,7 @@
 .DEFAULT_GOAL := help
 
 .PHONY: all 
-all: deploy_infra ## Deploy the complete demo stack
+all: deploy_infra deploy_tetrate ## Deploy the complete demo stack
 
 .PHONY: help
 help: Makefile ## Print help
@@ -18,6 +18,11 @@ deploy_infra_%:
 deploy_tetrate: deploy_tetrate_managementplane deploy_tetrate_controlplane ## Deploy Tetrate Service Express
 deploy_tetrate_%: 
 	@/bin/sh -c './make/tetrate_$*.sh deploy'
+
+.PHONY: describe_demo
+describe_demo: describe_tetrate ## Describe the complete demo stack
+describe_%:
+	@/bin/sh -c './make/describe.sh $*'
 
 .PHONY: destroy
 destroy: destroy_infra destroy_local ## Destroy the complete demo stack

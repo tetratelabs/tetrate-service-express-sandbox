@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -e
 
 export ROOT_DIR="$(
 	cd -- "$(dirname "${0}")" >/dev/null 2>&1
@@ -36,7 +35,7 @@ if [[ ${ACTION} = "destroy" ]]; then
 	cd "${ROOT_DIR}/../infra/aws"
 	export AWS_K8S_CLUSTERS=$(echo ${TFVARS} | jq -c ".k8s_clusters.aws")
 	export AWS_K8S_CLUSTERS_COUNT=$(echo ${AWS_K8S_CLUSTERS} | jq length)
-	for i in $(seq 0 ${AWS_K8S_CLUSTERS_COUNT}); do
+	for i in $(seq 1 ${AWS_K8S_CLUSTERS_COUNT}); do
 		index=$(($i - 1))
 		cluster_name=$(echo $AWS_K8S_CLUSTERS | jq -cr '.['$index'].name')
 		region=$(echo $AWS_K8S_CLUSTERS | jq -cr '.['$index'].region')

@@ -10,7 +10,7 @@ The intention is to create a go-to demo from deploying underlying infra environm
 
 ## Overview
 
-The `Makefile` in this directory provides ability to fast-forward to any point of the automated provisioning of the TSB demo
+The `Makefile` in this directory provides ability to fast-forward to any point of the automated provisioning of the demo
 
 ```mermaid
   graph TD;
@@ -102,7 +102,7 @@ The completion of the above steps will result in:
 
 - all the generated outputs will be provided under `./outputs` folder
 - output kubeconfig files for all the created aks clusters in format of: $cluster_name-kubeconfig
-- output IP address and private key for the jumpbox (ssh username: tsbadmin), using shell scripts login to the jumpbox, for example to reach gcp jumpbox just run the script `ssh-to-gcp-jumpbox.sh`
+- output IP address and private key for the jumpbox (ssh username: tetrate-admin), using shell scripts login to the jumpbox, for example to reach gcp jumpbox just run the script `ssh-to-gcp-jumpbox.sh`
 
 ### Application Scenarios and Use Cases
 
