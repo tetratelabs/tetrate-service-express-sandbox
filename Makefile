@@ -2,7 +2,7 @@
 .DEFAULT_GOAL := help
 
 .PHONY: all 
-all: deploy_infra deploy_tetrate ## Deploy the complete demo stack
+all: deploy_infra deploy_tetrate describe ## Deploy the complete demo stack
 
 .PHONY: help
 help: Makefile ## Print help
