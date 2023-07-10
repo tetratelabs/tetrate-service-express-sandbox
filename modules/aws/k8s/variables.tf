@@ -1,19 +1,19 @@
 variable "name_prefix" {
-  type    = string
+  type        = string
   description = "name prefix"
 }
 
 variable "cluster_name" {
-  type    = string
+  type        = string
   description = "cluster name"
 }
 
 variable "region" {
-  type    = string
+  type = string
 }
 
 variable "vpc_id" {
-  type    = string
+  type = string
 }
 
 variable "vpc_subnets" {
@@ -21,13 +21,13 @@ variable "vpc_subnets" {
 }
 
 variable "k8s_version" {
-  type    = string
+  type = string
 }
 
 variable "output_path" {
-  type    = string
+  type = string
 }
 
 variable "tags" {
-  type = map
+  type = map(any)
 }

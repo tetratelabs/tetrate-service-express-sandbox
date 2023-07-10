@@ -17,6 +17,11 @@ variable "k8s_cluster" {
   }
 }
 
+variable "tetrate" {
+  type    = map(any)
+  default = {}
+}
+
 locals {
   tetrate_defaults = {
     fqdn                = "demo"

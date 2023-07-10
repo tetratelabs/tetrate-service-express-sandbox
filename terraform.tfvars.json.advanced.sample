@@ -8,12 +8,16 @@
     "k8s_clusters": {
         "aws": [
         {
+            "name": "demo1",
             "region": "us-west-1",
-            "version": "1.26"
+            "version": "1.26",
+            "external_dns_zone": "aws-ce.sandbox.tetrate.io"
         },
         {
+            "name": "demo2",
             "region": "us-west-1",
-            "version": "1.26"
+            "version": "1.26",
+            "external_dns_zone": "aws-ce.sandbox.tetrate.io"
         } 
     ]
     }

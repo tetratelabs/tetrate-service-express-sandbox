@@ -14,7 +14,6 @@ data "terraform_remote_state" "k8s_auth" {
 
 module "load_balancer_controller" {
   source                     = "../../../modules/addons/aws/load-balancer-controller"
-  name_prefix                = "${var.name_prefix}-${var.cluster_id}"
   cluster_name               = data.terraform_remote_state.infra.outputs.cluster_name
   k8s_host                   = data.terraform_remote_state.infra.outputs.host
   k8s_cluster_ca_certificate = data.terraform_remote_state.infra.outputs.cluster_ca_certificate

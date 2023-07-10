@@ -17,3 +17,7 @@ variable "oidc_provider_arn" {
 variable "cluster_oidc_issuer_url" {
   default = ""
 }
+
+variable "helm_chart_version" {
+  default = "1.5.4"
+}

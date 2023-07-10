@@ -15,7 +15,7 @@ deploy_infra_%:
 	@/bin/sh -c './make/infra_$*.sh deploy'
 
 .PHONY: deploy_addons
-deploy_addons: deploy_addons_load-balancer-controller deploy_addons_fluxcd ## Deploy default addons
+deploy_addons: deploy_addons_load-balancer-controller deploy_addons_fluxcd deploy_addons_external-dns ## Deploy the default addons
 deploy_addons_%:
 	@/bin/sh -c './make/addons.sh deploy_$*'
 
@@ -32,8 +32,13 @@ describe_%:
 .PHONY: destroy
 destroy: destroy_infra destroy_local ## Destroy the complete demo stack
 
+.PHONY: destroy_addons
+destroy_addons: destroy_addons_external-dns ## Destroy the infra-integrated addons
+destroy_addons_%:
+	@/bin/sh -c './make/addons.sh destroy_$*'
+
 .PHONY: destroy_infra
-destroy_infra: destroy_infra_aws ## Destroy the underlaying infrastructure
+destroy_infra: destroy_addons destroy_infra_aws ## Destroy the underlaying infrastructure
 destroy_infra_%: 
 	@/bin/sh -c './make/infra_$*.sh destroy'
 

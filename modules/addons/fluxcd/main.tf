@@ -6,6 +6,19 @@ provider "helm" {
   }
 }
 
+provider "kubectl" {
+  host                   = var.k8s_host
+  cluster_ca_certificate = base64decode(var.k8s_cluster_ca_certificate)
+  token                  = var.k8s_client_token
+  load_config_file       = false
+}
+
+provider "kubernetes" {
+  host                   = var.k8s_host
+  cluster_ca_certificate = base64decode(var.k8s_cluster_ca_certificate)
+  token                  = var.k8s_client_token
+}
+
 resource "helm_release" "fluxcd" {
   name             = "flux2"
   repository       = "https://fluxcd-community.github.io/helm-charts"
@@ -17,11 +30,11 @@ resource "helm_release" "fluxcd" {
 }
 
 data "kubectl_path_documents" "applications" {
-    pattern = var.applications
+  pattern = var.applications
 }
 
 resource "kubectl_manifest" "applications" {
-    for_each   = toset(data.kubectl_path_documents.applications.documents)
-    yaml_body  = each.value
-    depends_on = [helm_release.fluxcd]
+  for_each   = toset(data.kubectl_path_documents.applications.documents)
+  yaml_body  = each.value
+  depends_on = [helm_release.fluxcd]
 }
