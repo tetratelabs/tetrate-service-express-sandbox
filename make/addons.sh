@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+
 
 export ROOT_DIR="$(
 	cd -- "$(dirname "${0}")" >/dev/null 2>&1
