@@ -14,6 +14,11 @@ deploy_infra: deploy_infra_aws ## Deploy an underlaying infrastructure
 deploy_infra_%: 
 	@/bin/sh -c './make/infra_$*.sh deploy'
 
+.PHONY: deploy_addons
+deploy_addons: deploy_addons_load-balancer-controller deploy_addons_fluxcd ## Deploy default addons
+deploy_addons_%:
+	@/bin/sh -c './make/addons.sh deploy_$*'
+
 .PHONY: deploy_tetrate
 deploy_tetrate: deploy_tetrate_managementplane deploy_tetrate_controlplane ## Deploy Tetrate Service Express
 deploy_tetrate_%: 

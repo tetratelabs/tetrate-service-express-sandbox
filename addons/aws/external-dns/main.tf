@@ -1,14 +1,14 @@
 data "terraform_remote_state" "infra" {
   backend = "local"
   config = {
-    path = "../../../infra/${var.cloud}/terraform.tfstate.d/${var.cloud}-${var.cluster_id}-${local.k8s_regions[var.cluster_id]}/terraform.tfstate"
+    path = "../../../infra/${var.k8s_cluster["cloud"]}/terraform.tfstate.d/${var.k8s_cluster["cloud"]}-${var.cluster_id}-${var.region}/terraform.tfstate"
   }
 }
 
 data "terraform_remote_state" "k8s_auth" {
   backend = "local"
   config = {
-    path = "../../../infra/${var.cloud}/k8s_auth/terraform.tfstate.d/${var.cloud}-${var.cluster_id}-${local.k8s_regions[var.cluster_id]}/terraform.tfstate"
+    path = "../../../infra/${var.k8s_cluster["cloud"]}/k8s_auth/terraform.tfstate.d/${var.k8s_cluster["cloud"]}-${var.cluster_id}-${var.region}/terraform.tfstate"
   }
 }
 
@@ -22,7 +22,7 @@ module "external_dns" {
   oidc_provider_arn          = data.terraform_remote_state.infra.outputs.oidc_provider_arn
   cluster_oidc_issuer_url    = data.terraform_remote_state.infra.outputs.cluster_oidc_issuer_url
   vpc_id                     = data.terraform_remote_state.infra.outputs.vpc_id
-  region                     = local.k8s_regions[var.cluster_id]
+  region                     = var.region
   tags                       = local.default_tags
   dns_zone                   = var.external_dns_aws_dns_zone
   sources                    = var.external_dns_sources

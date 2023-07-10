@@ -1,9 +1,7 @@
 variable "name_prefix" {
-  description = "name prefix"
 }
 
 variable "cluster_name" {
-  description = "cluster name"
 }
 
 variable "output_path" {
@@ -25,7 +23,7 @@ variable "k8s_client_token" {
 }
 
 variable "tags" {
-  type = map
+  type = map(any)
 }
 
 variable "dns_zone" {
@@ -44,8 +42,8 @@ variable "interval" {
 }
 
 locals {
-  dns_name      = var.dns_zone
-  zone_name     = replace(local.dns_name, ".", "-")
+  dns_name  = var.dns_zone
+  zone_name = replace(local.dns_name, ".", "-")
 }
 
 variable "oidc_provider_arn" {

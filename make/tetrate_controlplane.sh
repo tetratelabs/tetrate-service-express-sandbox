@@ -27,7 +27,7 @@ if [[ ${ACTION} = "deploy" ]]; then
 		terraform init
 		terraform apply ${TERRAFORM_APPLY_ARGS} -var-file="../../terraform.tfvars.json" \
 			-var=cluster_name=$cluster_name -var=cluster_id=$index -var=region=$region
-		terraform output ${TERRAFORM_OUTPUT_ARGS} | jq . >../../outputs/terraform_outputs/terraform-aws-$index-$cluster_name.json
+		terraform output ${TERRAFORM_OUTPUT_ARGS} | jq . >../../outputs/terraform_outputs/terraform-tse-controlplane-$index-$cluster_name.json
 		terraform workspace select default
 	done
 	cd "../.."

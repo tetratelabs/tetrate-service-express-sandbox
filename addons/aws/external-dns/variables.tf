@@ -1,53 +1,50 @@
-variable "cloud" {
-  default = null
-}
-
 variable "cluster_id" {
-  default = null
 }
 
 variable "name_prefix" {
-  description = "name prefix"
 }
 
 variable "output_path" {
   default = "../../../outputs"
 }
 
-variable "tsb_image_sync_username" {
+variable "region" {
 }
 
-variable "aws_k8s_regions" {
-  default = []
-}
-
-locals {
-  k8s_regions = var.aws_k8s_regions
-}
-
-variable "tetrate_owner" {
-}
-variable "tetrate_team" {
-}
-variable "tetrate_purpose" {
-  default = "demo"
-}
-variable "tetrate_lifespan" {
-  default = "oneoff"
-}
-variable "tetrate_customer" {
-  default = "internal"
-}
-
-locals {
-  default_tags = {
-       "tetrate:owner"    = coalesce(var.tetrate_owner, replace(var.tsb_image_sync_username, "/\\W+/", "-"))
-       "tetrate:team"     = var.tetrate_team
-       "tetrate:purpose"  = var.tetrate_purpose
-       "tetrate:lifespan" = var.tetrate_lifespan
-       "tetrate:customer" = var.tetrate_customer
-       "environment"      = var.name_prefix
+variable "k8s_cluster" {
+  default = {
+    cloud = "aws"
   }
+}
+
+locals {
+  tetrate_defaults = {
+    fqdn                = "demo"
+    version             = "demo"
+    password            = "Tetrate123"
+    image_sync_username = "demo"
+    image_sync_apikey   = "demo"
+    helm_repository     = "https://charts.dl.tetrate.io/public/helm/charts/"
+  }
+  tetrate = merge(local.tetrate_defaults, var.tetrate)
+}
+
+variable "tags" {
+  type    = map(any)
+  default = {}
+}
+
+locals {
+  tags = {
+    "tetrate:owner"    = "demo"
+    "tetrate:team"     = "demo"
+    "tetrate:purpose"  = "demo"
+    "tetrate:lifespan" = "demo"
+    "tetrate:customer" = "demo"
+    "environment"      = var.name_prefix
+  }
+
+  default_tags = merge(local.tags, var.tags)
 }
 
 variable "external_dns_annotation_filter" {
