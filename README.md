@@ -29,9 +29,6 @@ The `Makefile` in this directory provides ability to fast-forward to any point o
          tetrate_controlplane[make deploy_tetrate_controlplane]
       end
       tetrate --> apps[make deploy_apps]
-      subgraph apps[make deploy_apps]
-         apps[make deploy_apps]
-      end
 ```
 
 # Getting Started
