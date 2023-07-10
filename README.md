@@ -23,7 +23,7 @@ The `Makefile` in this directory provides ability to fast-forward to any point o
          aws-load-balancer-controller[make deploy_addons_aws-load-balancer-controller] -->
          fluxcd[make deploy_addons_fluxcd]
       end
-      infra --> tetrate[make deploy_tetrate]
+      addons --> tetrate[make deploy_tetrate]
       subgraph tetrate[make deploy_tetrate]
          tetrate_managementplane[make deploy_tetrate_managementplane] -->
          tetrate_controlplane[make deploy_tetrate_controlplane]
