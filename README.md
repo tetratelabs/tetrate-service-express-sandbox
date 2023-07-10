@@ -30,7 +30,7 @@ The `Makefile` in this directory provides ability to fast-forward to any point o
       end
       tetrate --> apps[make deploy_apps]
       subgraph apps[make deploy_apps]
-         fluxcd[make deploy_apps_fluxcd]
+         apps[make deploy_apps]
       end
 ```
 
