@@ -26,7 +26,7 @@ module "eks" {
 
   cluster_addons = {
     coredns = {
-      most_recent = true
+      most_recent       = true
       resolve_conflicts = "OVERWRITE"
     }
     kube-proxy = {
@@ -41,7 +41,7 @@ module "eks" {
       })
     }
     vpc-cni = {
-      most_recent = true
+      most_recent       = true
       resolve_conflicts = "OVERWRITE"
     }
   }
@@ -83,7 +83,7 @@ module "eks" {
       cidr_blocks = ["0.0.0.0/0"]
     }
   }
-  
+
   tags = merge(var.tags, {
     Name = "${var.cluster_name}"
   })
