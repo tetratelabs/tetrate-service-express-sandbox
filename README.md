@@ -33,6 +33,7 @@ The `Makefile` in this directory provides ability to fast-forward to any point o
 ## Prerequisites
 
 - terraform >= 1.5.0
+- k8s >= 1.24
 - AWS role configured and assumed for terraform to deploy 
 ## Setup
 
@@ -57,12 +58,12 @@ git clone https://github.com/smarunich/tetrate-service-express-sandbox.git
         {
             "name": "demo1",
             "region": "us-west-1",
-            "version": "1.23"
+            "version": "1.26"
         },
         {
             "name": "demo2",
             "region": "us-west-1",
-            "version": "1.23"
+            "version": "1.26"
         } 
     ]
     }
