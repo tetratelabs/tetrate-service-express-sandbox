@@ -9,11 +9,11 @@
         "aws": [
         {
             "region": "us-west-1",
-            "version": "1.26"
+            "version": "1.24"
         },
         {
             "region": "us-west-1",
-            "version": "1.26"
+            "version": "1.24"
         } 
     ]
     }
