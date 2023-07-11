@@ -280,7 +280,7 @@ resource "local_file" "tetrateadmin_pem" {
 
 resource "local_file" "ssh_jumpbox" {
   content         = "ssh -i ${regex(".+-\\d+", "${var.name_prefix}")}-aws-${var.jumpbox_username}.pem -l ${var.jumpbox_username} ${aws_instance.jumpbox.public_ip}"
-  filename        = "${var.output_path}/ssh-to-aws-${regex(".+-\\d+", "${var.name_prefix}")}-jumpbox.sh"
+  filename        = "${var.output_path}/ssh-to-aws-${regex(".+-\\d+", "${var.name_prefix}")}-jumpbox.sh \"$@\""
   file_permission = "0755"
 }
 
