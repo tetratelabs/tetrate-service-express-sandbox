@@ -21,3 +21,7 @@ variable "cluster_oidc_issuer_url" {
 variable "helm_chart_version" {
   default = "1.5.4"
 }
+
+variable "settings" {
+  default = { "controllerConfig" = { "featureGates" = { "SubnetsClusterTagCheck" : "false" } } }
+}
