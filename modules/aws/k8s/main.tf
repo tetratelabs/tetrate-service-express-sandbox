@@ -101,12 +101,9 @@ module "eks" {
 
   putin_khuylo = true
 
-}
-
-module "eks_auth" {
-  source = "aidanmelen/eks-auth/aws"
-  eks    = module.eks
-  map_roles = [
+  create_aws_auth_configmap = false
+  manage_aws_auth_configmap = true
+  aws_auth_roles = [
     {
       rolearn  = var.jumpbox_iam_role_arn
       username = "eks-admin"
@@ -119,10 +116,15 @@ data "aws_eks_cluster_auth" "cluster" {
   name = var.cluster_name
 }
 
+# Workaround for aws-auth configmap detection: https://github.com/terraform-aws-modules/terraform-aws-eks/issues/2525 
 provider "kubernetes" {
   host                   = module.eks.cluster_endpoint
   cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
-  token                  = data.aws_eks_cluster_auth.cluster.token
+  exec {
+    api_version = "client.authentication.k8s.io/v1beta1"
+    command     = "/bin/sh"
+    args        = ["-c", "for i in $(seq 1 30); do curl -s -k -f ${module.eks.cluster_endpoint}/healthz > /dev/null && break || sleep 10; done && aws eks --region ${data.aws_availability_zones.available.id} get-token --cluster-name ${var.cluster_name}"]
+  }
 }
 
 resource "local_file" "gen_kubeconfig_sh" {
