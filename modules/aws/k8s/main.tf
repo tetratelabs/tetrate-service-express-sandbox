@@ -90,6 +90,7 @@ module "eks" {
 
   putin_khuylo = true
 
+  create_aws_auth_configmap = false
   manage_aws_auth_configmap = true
   aws_auth_roles = [
     {
@@ -97,6 +98,7 @@ module "eks" {
       username = "eks-admin"
       groups   = ["system:masters"]
     },
+  ]
 }
 
 data "aws_eks_cluster_auth" "cluster" {
