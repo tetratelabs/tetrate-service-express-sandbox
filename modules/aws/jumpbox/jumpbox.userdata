@@ -52,16 +52,18 @@ write_files:
       ./aws/install
       #install krew, the instruction from official docs: https://krew.sigs.k8s.io/docs/user-guide/setup/install/
       sudo -u ${jumpbox_username} -H /bin/bash -c "(
-        curl -fsSLO https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-linux_amd64.tar.gz &&
+        cd /tmp;
+        curl -LO https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-linux_amd64.tar.gz &&
         tar zxvf "krew-linux_amd64.tar.gz" &&
         ./krew-linux_amd64 install krew
       )"
       echo 'export PATH="$PATH:$HOME/.krew/bin"' >> /etc/bash.bashrc
       #install kubecm, kubectx and kubens
-      sudo -u ${jumpbox_username} -H /bin/bash -c "(
-      kubectl krew install kc &&
-      kubectl krew install ctx &&
-      kubectl krew install ns
+      sudo -u ${jumpbox_username} -H bash -c "(
+        export PATH="$PATH:$HOME/.krew/bin" &&
+        kubectl krew install kc &&
+        kubectl krew install ctx &&
+        kubectl krew install ns
       )"
       #kubectx preparation
       mkdir /home/${jumpbox_username}/.kube
