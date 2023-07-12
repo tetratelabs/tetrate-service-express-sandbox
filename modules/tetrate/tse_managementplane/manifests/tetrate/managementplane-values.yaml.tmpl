@@ -1,12 +1,2 @@
 image:
   registry: ${registry}
-spec:
-  components:
-    frontEnvoy:
-      kubeSpec:
-        service:
-          annotations:
-            service.beta.kubernetes.io/aws-load-balancer-name: tse-front-envoy
-            service.beta.kubernetes.io/aws-load-balancer-type: external
-            service.beta.kubernetes.io/aws-load-balancer-attributes: "load_balancing.cross_zone.enabled=true"
-            service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
