@@ -24,6 +24,10 @@ variable "k8s_version" {
   type = string
 }
 
+variable "jumpbox_iam_role_arn" {
+  type = string
+}
+
 variable "output_path" {
   type = string
 }

@@ -90,11 +90,23 @@ module "eks" {
 
   putin_khuylo = true
 
+  manage_aws_auth_configmap = true
+  aws_auth_roles = [
+    {
+      rolearn  = var.jumpbox_iam_role_arn
+      username = "eks-admin"
+      groups   = ["system:masters"]
+    },
 }
 
 data "aws_eks_cluster_auth" "cluster" {
-  name       = var.cluster_name
-  depends_on = [module.eks]
+  name = var.cluster_name
+}
+
+provider "kubernetes" {
+  host                   = module.eks.cluster_endpoint
+  cluster_ca_certificate = base64decode(module.eks.cluster_certificate_authority_data)
+  token                  = data.aws_eks_cluster_auth.cluster.token
 }
 
 resource "local_file" "gen_kubeconfig_sh" {
