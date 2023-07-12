@@ -2,6 +2,8 @@
 **/.terraform/*
 tests/*
 *.tfvars.json
+*.trunk
+
 
 # .tfstate files
 *.tfstate
