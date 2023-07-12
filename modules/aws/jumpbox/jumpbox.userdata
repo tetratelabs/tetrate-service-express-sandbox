@@ -10,8 +10,8 @@ packages:
   - tmux
   - vim
   - jq
-  - awscli
   - skopeo
+  - unzip
 
 users:
   - default
@@ -40,6 +40,41 @@ write_files:
         --registry ${registry} \
         --accept-eula \
         --parallel
+      #install eksctl, the instruction from official docs: https://github.com/eksctl-io/eksctl/blob/main/README.md#installation
+      ARCH=amd64
+      PLATFORM=$(uname -s)_$ARCH
+      curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
+      tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
+      mv /tmp/eksctl /usr/local/bin
+      #install awscliv2, the instruction from official docs: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+      curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+      unzip awscliv2.zip
+      ./aws/install
+      #install krew, the instruction from official docs: https://krew.sigs.k8s.io/docs/user-guide/setup/install/
+      sudo -u ${jumpbox_username} -H /bin/bash -c "(
+        curl -fsSLO https://github.com/kubernetes-sigs/krew/releases/latest/download/krew-linux_amd64.tar.gz &&
+        tar zxvf "krew-linux_amd64.tar.gz" &&
+        ./krew-linux_amd64 install krew
+      )"
+      echo 'export PATH="$PATH:$HOME/.krew/bin"' >> /etc/bash.bashrc
+      #install kubecm, kubectx and kubens
+      sudo -u ${jumpbox_username} -H /bin/bash -c "(
+      kubectl krew install kc &&
+      kubectl krew install ctx &&
+      kubectl krew install ns
+      )"
+      #kubectx preparation
+      mkdir /home/${jumpbox_username}/.kube
+      touch /home/${jumpbox_username}/.kube/config
+      chown -R ${jumpbox_username}:${jumpbox_username} /home/${jumpbox_username}/.kube
+      #install kubecolor
+      curl -LO https://github.com/hidetatz/kubecolor/releases/download/v0.0.25/kubecolor_0.0.25_Linux_x86_64.tar.gz
+      tar zxvf kubecolor_0.0.25_Linux_x86_64.tar.gz
+      install -o root -g root -m 0755  kubecolor /usr/bin/kubecolor
+      echo 'command -v kubecolor >/dev/null 2>&1 && alias kubectl="kubecolor"' >> /etc/bash.bashrc
+      echo 'alias k="kubectl"' >> /etc/bash.bashrc
+      echo 'alias kubecm="kubectl-kc"' >> /etc/bash.bashrc
+      echo 'alias kubectx="kubectl-ctx"' >> /etc/bash.bashrc
       touch /tmp/cloud-init.done
     path: /opt/bootstrap.sh
     permissions: 0755

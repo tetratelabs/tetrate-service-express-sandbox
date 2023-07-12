@@ -63,6 +63,17 @@ module "eks" {
       type                       = "egress"
       source_node_security_group = true
     }
+
+    inress_ec2_tcp = {
+      description                   = "Access EKS externally"
+      protocol                      = "tcp"
+      from_port                     = 443
+      to_port                       = 443
+      type                          = "ingress"
+      cidr_blocks                   = ["0.0.0.0/0"]
+      source_cluster_security_group = false
+    }
+
   }
 
   node_security_group_additional_rules = {
