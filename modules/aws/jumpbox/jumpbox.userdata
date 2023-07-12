@@ -46,7 +46,7 @@ write_files:
       curl -sLO "https://github.com/eksctl-io/eksctl/releases/latest/download/eksctl_$PLATFORM.tar.gz"
       tar -xzf eksctl_$PLATFORM.tar.gz -C /tmp && rm eksctl_$PLATFORM.tar.gz
       mv /tmp/eksctl /usr/local/bin
-      #install awscliv2, the instruction from official docs: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
+      #install awscliv2, the instruction from official docs: http://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
       curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
       unzip awscliv2.zip
       ./aws/install

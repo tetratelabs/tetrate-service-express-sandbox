@@ -101,9 +101,12 @@ module "eks" {
 
   putin_khuylo = true
 
-  create_aws_auth_configmap = false
-  manage_aws_auth_configmap = true
-  aws_auth_roles = [
+}
+
+module "eks_auth" {
+  source = "aidanmelen/eks-auth/aws"
+  eks    = module.eks
+  map_roles = [
     {
       rolearn  = var.jumpbox_iam_role_arn
       username = "eks-admin"
