@@ -157,7 +157,8 @@ resource "aws_iam_role_policy" "jumpbox_iam_policy" {
               "route53:ChangeResourceRecordSets",
               "route53:ChangeTagsForResource",
               "route53:ListResourceRecordSets",
-              "route53:ListHostedZone"
+              "route53:ListHostedZone",
+              "eks:DescribeCluster"
             ],
             "Resource": "*"
         }
@@ -194,9 +195,6 @@ resource "aws_iam_instance_profile" "jumpbox_iam_profile" {
     Name = "${var.name_prefix}_jumpbox_profile"
   })
 }
-
-
-
 
 resource "tls_private_key" "generated" {
   algorithm = "RSA"
@@ -279,8 +277,8 @@ resource "local_file" "tetrateadmin_pem" {
 }
 
 resource "local_file" "ssh_jumpbox" {
-  content         = "ssh -i ${regex(".+-\\d+", "${var.name_prefix}")}-aws-${var.jumpbox_username}.pem -l ${var.jumpbox_username} ${aws_instance.jumpbox.public_ip}"
-  filename        = "${var.output_path}/ssh-to-aws-${regex(".+-\\d+", "${var.name_prefix}")}-jumpbox.sh \"$@\""
+  content         = "ssh -i ${regex(".+-\\d+", "${var.name_prefix}")}-aws-${var.jumpbox_username}.pem -l ${var.jumpbox_username} ${aws_instance.jumpbox.public_ip} \"$@\""
+  filename        = "${var.output_path}/ssh-to-aws-${regex(".+-\\d+", "${var.name_prefix}")}-jumpbox.sh"
   file_permission = "0755"
 }
 

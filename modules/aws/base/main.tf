@@ -17,9 +17,7 @@ resource "aws_subnet" "tetrate" {
   vpc_id                  = aws_vpc.tetrate.id
   map_public_ip_on_launch = "true"
   tags = merge(var.tags, {
-    Name                     = "${var.name_prefix}_subnet_${data.aws_availability_zones.available.names[count.index]}",
-    "kubernetes.io/role/elb" = 1,
-  "kubernetes.io/role/internal-elb" = 1 })
+  Name = "${var.name_prefix}_subnet_${data.aws_availability_zones.available.names[count.index]}", "kubernetes.io/role/elb" = 1, "kubernetes.io/role/internal-elb" = 1 })
 }
 
 resource "aws_internet_gateway" "tetrate" {
