@@ -3,7 +3,7 @@ output "public_ip" {
 }
 
 output "jumpbox_iam_role_arn" {
-  value = aws_iam_instance_profile.jumpbox_iam_profile.arn
+  value = aws_iam_role.jumpbox_iam_role.arn
 }
 
 output "pkey" {
