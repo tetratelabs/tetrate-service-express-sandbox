@@ -35,9 +35,9 @@ resource "helm_release" "managementplane" {
   })]
 }
 
-resource "time_sleep" "wait_240_seconds" {
+resource "time_sleep" "wait_60_seconds" {
   depends_on      = [helm_release.managementplane]
-  create_duration = "240s"
+  create_duration = "60s"
 }
 
 data "kubernetes_service" "tetrate" {
@@ -45,5 +45,5 @@ data "kubernetes_service" "tetrate" {
     name      = "envoy"
     namespace = "tse"
   }
-  depends_on = [time_sleep.wait_240_seconds]
+  depends_on = [time_sleep.wait_60_seconds]
 }
