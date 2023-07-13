@@ -31,15 +31,28 @@ write_files:
       install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
       curl -LO https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
       install -o root -g root -m 0755 yq_linux_amd64 /usr/bin/yq
-      ${docker_login}
       curl -Lo "/usr/local/bin/tctl" "https://binaries.dl.tetrate.io/public/raw/versions/linux-amd64-${tetrate_version}/tctl"
       chmod +x "/usr/local/bin/tctl"
-      tctl install image-sync \
-        --username "${tetrate_image_sync_username}" \
-        --apikey "${tetrate_image_sync_apikey}" \
-        --registry ${registry} \
-        --accept-eula \
-        --parallel
+      echo 'tctl install image-sync...'
+      MAX_RETRIES=5
+      RETRY_DELAY=5
+      retry_count=0
+      while [ $retry_count -lt $MAX_RETRIES ]; do
+          ${docker_login}
+          if tctl install image-sync \
+              --username "${tetrate_image_sync_username}" \
+              --apikey "${tetrate_image_sync_apikey}" \
+              --registry "${registry}" \
+              --accept-eula \
+              --parallel; then
+              echo "tctl install image-sync successful."
+              break
+          else
+              echo "tctl install image-sync failed. Retrying in $RETRY_DELAY seconds..."
+              sleep $RETRY_DELAY
+              retry_count=$((retry_count+1))
+          fi
+      done
       touch /tmp/boostrap_core.done
     path: /opt/bootstrap_core.sh
     permissions: 0755
