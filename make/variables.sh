@@ -27,6 +27,8 @@ export ROOT_DIR="$(
   pwd -P
 )"
 
+export OUTPUTS_DIR=${ROOT_DIR}/../outputs
+
 export TERRAFORM_APPLY_ARGS="-compact-warnings -auto-approve"
 export TERRAFORM_DESTROY_ARGS="-compact-warnings -auto-approve"
 export TERRAFORM_WORKSPACE_ARGS="-force"
@@ -36,6 +38,22 @@ export TFVARS_LOCATION="${ROOT_DIR}/../terraform.tfvars.json"
 export TFVARS=$(jq -c . ${TFVARS_LOCATION})
 
 export NAME_PREFIX=$(echo ${TFVARS} | jq -r ".name_prefix")
+
+export GIT_REPO=$(echo ${TFVARS} | jq -r ".git_repo")
+
+if [ "${GIT_REPO}" = "null" ]; then
+    export GIT_REPO="https://github.com/smarunich/tetrate-service-express-sandbox"
+fi
+
+run_command_at_jumpbox() {
+  local cluster_index="$1"
+  local command="$2"
+  export helper_script=${OUTPUTS_DIR}/ssh-to-aws-${NAME_PREFIX}-$cluster_index-jumpbox.sh
+  
+  (
+    cd ${OUTPUTS_DIR} && ${helper_script} ${command}
+  )
+}
 
 # Print info messages
 function print_info {

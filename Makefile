@@ -29,6 +29,11 @@ describe: describe_demo ## Describe the complete demo stack
 describe_%:
 	@/bin/sh -c './make/describe.sh $*'
 
+.PHONY: demo
+demo:
+demo_%:
+	@/bin/sh -c './make/demo.sh $*'
+
 .PHONY: destroy
 destroy: destroy_infra destroy_local ## Destroy the complete demo stack
 
