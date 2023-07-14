@@ -15,7 +15,8 @@ fi
 
 if [[ ${ACTION} = "deploy_bookinfo" ]]; then
 	export CLUSTER_INDEX=0
-  run_command_at_jumpbox $CLUSTER_INDEX "if [ ! -d tetrate-service-express-sandbox ]; then git clone ${GIT_REPO}; fi"
+  # Initialize demo directory
+  run_command_at_jumpbox $CLUSTER_INDEX "if [ ! -d demo ]; then git clone ${GIT_REPO}; cp -r tetrate-service-express-sandbox/demo . ;fi"
   #kubectl create namespace bookinfo
   #kubectl label namespace bookinfo istio-injection=enabled
   run_command_at_jumpbox $CLUSTER_INDEX 'cd /tmp; echo $PWD'
