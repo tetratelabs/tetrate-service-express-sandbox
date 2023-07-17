@@ -47,30 +47,32 @@ fi
 
 run_command_at_jumpbox() {
   local cluster_index="$1"
-  local command="$2"
+  local input="$*"
+  local command=("${input[@]:1}")
   export helper_script=${OUTPUTS_DIR}/ssh-to-aws-${NAME_PREFIX}-$cluster_index-jumpbox.sh
   
-  (
+  (    
+    print_command ${command}
     cd ${OUTPUTS_DIR} && ${helper_script} ${command}
   )
 }
 
 # Print info messages
 function print_info {
-  echo -e "${greenb}${1}${end}"
+  echo -e "${bgreen}${*}"
 }
 
 # Print warning messages
 function print_warning {
-  echo -e "${yellowb}${1}${end}"
+  echo -e "${byellow}${*}"
 }
 
 # Print error messages
 function print_error {
-  echo -e "${redb}${1}${end}"
+  echo -e "${bred}${*}"
 }
 
 # Print command messages
 function print_command {
-  echo -e "${lightblueb}${1}${end}"
+  echo -e "${bblue}${*}"
 }
