@@ -35,8 +35,6 @@ if [[ ${ACTION} = "deploy_bookinfo" ]]; then
   init_kubeconfig $index $cluster_name $region
   print_info "Check if demo directory exists, if not create..."
   run_command_at_jumpbox $index "if [ ! -d demo ]; then git clone ${GIT_REPO}; cp -r tetrate-service-express-sandbox/demo . ;fi"
-  #kubectl create namespace bookinfo
-  #kubectl label namespace bookinfo istio-injection=enabled
   print_info "Deploy bookinfo..."
-  run_command_at_jumpbox $index 'cd /tmp; echo $PWD'
+  run_command_at_jumpbox $index 'demo/scripts/deploy_bookinfo.sh'
 fi
