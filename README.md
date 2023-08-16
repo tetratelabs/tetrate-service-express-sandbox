@@ -50,7 +50,7 @@ git clone https://github.com/smarunich/tetrate-service-express-sandbox.git
 {
     "name_prefix": "<YOUR UNIQUE PREFIX NAME TO BE CREATED>",
     "tetrate": {
-        "version": "1.7.0-preview3+tse",
+        "version": "1.7.0+tse",
         "image_sync_username": "<TETRATE_REPO_USERNAME>",
         "image_sync_apikey": "<TETRATE_REPO_APIKEY>"
     },
