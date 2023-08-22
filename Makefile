@@ -7,7 +7,7 @@ all: deploy_infra deploy_tetrate describe ## Deploy the complete demo stack
 .PHONY: help
 help: Makefile ## Print help
 	@awk 'BEGIN {FS = ":.*##"; printf "Usage:\n"} \
-			/^[.a-zA-Z0-9_-]+:.*?##/ { printf "  \033[36mmake %-15s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
+			/^[.a-zA-Z0-9_-]+:.*?##/ { printf "  \033[36mmake %-30s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 
 .PHONY: deploy_infra
 deploy_infra: deploy_infra_aws deploy_addons ## Deploy an underlaying infrastructure
@@ -30,7 +30,12 @@ describe_%:
 	@/bin/sh -c './make/describe.sh $*'
 
 .PHONY: demo
-demo:
+demo_01-deploy-application: demo_01-deploy-application ## Deploy the demo application
+demo_02-mtls: demo_01-deploy-application demo_02-mtls ## Lunch the mTLS demo
+demo_03-zero-trust: demo_01-deploy-application demo_03-zero-trust ## Lunch the Zero Trust demo 
+demo_04-publish-service: demo_01-deploy-application demo_04-publish-service ## Lunch the Service Publishing demo
+demo_05-publish-api: demo_01-deploy-application demo_05-publish-api ## Lunch the API Publishing demo
+demo_all: demo_01-deploy-application demo_02-mtls demo_03-zero-trust demo_04-publish-service demo_05-publish-api ## Setup all demos
 demo_%:
 	@/bin/sh -c './make/demo.sh $*'
 

@@ -25,7 +25,14 @@ The `Makefile` in this directory provides ability to fast-forward to any point o
          tetrate_managementplane[make deploy_tetrate_managementplane] -->
          tetrate_controlplane[make deploy_tetrate_controlplane]
       end
-      tetrate --> apps[make deploy_apps]
+      tetrate --> apps[make demo_all]
+      subgraph apps[make demo_all]
+         deploy-application[make demo_01-deploy-application] -->
+         mtls[make demo_02-mtls] -->
+         zero-trust[make demo_03-zero-trust] -->
+         publish-service[make demo_04-publish-service] -->
+         publish-api[make demo_05-publish-api]
+      end
       apps --> describe[make describe_demo]
 ```
 
@@ -94,11 +101,26 @@ make deploy_tetrate_managementplane
 # Onboard deployed clusters
 make deploy_tetrate_controlplane
 
-# Deploy demo applications
-make deploy_apps
-
 # Describe the complete demo stack
 make describe_demo
+
+# Deploy the demo application
+make demo_01-deploy-application
+
+# Lunch the mTLS demo
+make demo_02-mtls
+
+# Lunch the Zero Trust demo
+make demo_03-zero-trust
+
+# Lunch the Service Publishing demo
+make demo_04-publish-service
+
+# Lunch the API Publishing demo
+make demo_05-publish-api
+
+# Fast-forward - Setup all demos
+make demo_all
 ```
 
 

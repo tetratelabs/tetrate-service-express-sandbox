@@ -1,5 +1,8 @@
 set -x
 export NAMESPACE="bookinfo"
+
+echo "Deploying application... as per https://docs.tetrate.io/service-express/getting-started/deploy-application"
+
 kubectl create namespace $NAMESPACE
 kubectl label namespace $NAMESPACE istio-injection=enabled
 kubectl apply -f demo/manifests/getting_started_guide/bookinfo.yaml -n $NAMESPACE
