@@ -15,7 +15,7 @@ if [[ ${ACTION} = "demo" ]]; then
 	TSE_PASSWORD=$(cat ${ROOT_DIR}/../outputs/terraform_outputs/terraform-tse-managementplane.json | jq .tetrate_managementplane_password.value)
 	print_info "${bblue}Welcome to Tetrate Service Express Demo Environment on AWS Elastic Kubernetes Service using Terraform"
 	echo -e "${bgreen}- Tetrate Service Express Management Plane is reachable at ${bblue}https://$TSE_MANAGEMENTPLANE ${bgreen}with username username: ${bblue}$TSE_USERNAME ${bgreen}and password:${bblue} $TSE_PASSWORD" | tr -d '"'
-	echo -e "${bgreen}- Please consult KB for tctl access: ${ublue}https://docs-preview.tetrate.io/service-express/Tech-Preview/installation/management-plane#access-the-management-plane-using-a-web-browser${end}"
+	echo -e "${bgreen}- Please consult KB for tctl access: ${ublue}https://docs-preview.tetrate.io/service-express/installation/management-plane#access-the-management-plane-using-a-web-browser${end}"
 	echo -e "${bgreen}- tctl access is also provided using ${bblue}jumpboxes${bgreen}, please consult for ${bblue}outputs${bgreen} folder - ${bblue}ssh-to-aws${bgreen} scripts to reach any of the deployed jumpboxes"
  	echo -e "${bgreen}- for kubernetes cluster access, please consult for ${bblue}outputs${bgreen} folder for ${bblue}generate-*-kubeconfig${bgreen} scripts to generate and consume kubeconfig files"
 	echo -e "- List of provisioned Kubernetes clusters:"	
