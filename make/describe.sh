@@ -37,4 +37,7 @@ if [[ ${ACTION} = "demo" ]]; then
 		echo -e "\t$index\t|\t$cluster_name\t\t|\t$region\t|\t$k8s_version\t"
 		done
 	echo "$separator"
+ 	echo -e "${bgreen}- Please consult ${bblue}Getting Started Guide${bgreen} to begin ${bblue}https://docs.tetrate.io/service-express/getting-started/${bgreen}"
+	echo -e "${bgreen}- ${bblue}make demo${bgreen} targets are available to fast track the quick start guide, please refer to ${bblue}make help${bgreen} for more information"
+	echo -e "${bgreen}- Please consult ${bblue}Tetrate Service Express Documentation${bgreen} for more information ${bblue}https://docs.tetrate.io/service-express/${bgreen}"
 fi
