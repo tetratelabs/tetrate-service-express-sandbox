@@ -49,7 +49,7 @@ case "${ACTION}" in
     deploy_action "Enforce Encryption with Mutual TLS" "mtls" "02-mtls.sh"
     ;;
   zero-trust | 03-zero-trust | 03)
-    deploy_action "Enforce A Zero-Trust Security Policy" "03-zero-trust.sh"
+    deploy_action "Enforce A Zero-Trust Security Policy" "zero-trust" "03-zero-trust.sh"
     ;;
   publish-service | 04-publish-service | 04)
     deploy_action "Publishing a Service" "publish-service" "04-publish-service.sh"
