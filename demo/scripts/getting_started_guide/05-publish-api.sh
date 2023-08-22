@@ -296,4 +296,4 @@ echo "Test the API..."
 
 export GATEWAY_IP=$(kubectl -n bookinfo get service bookinfo-ingress-gw -o jsonpath="{.status.loadBalancer.ingress[0]['hostname','ip']}")
 
-curl  http://api.tse.tetratelabs.io/api/v1/products --connect-to "api.tse.tetratelabs.io:80:$GATEWAY_IP" | jq .
+curl http://api.tse.tetratelabs.io/api/v1/products --connect-to "api.tse.tetratelabs.io:80:$GATEWAY_IP" | jq .
