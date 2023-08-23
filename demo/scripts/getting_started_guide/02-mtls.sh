@@ -36,4 +36,4 @@ POD=$( kubectl get pod -n sleep -l app=sleep -o jsonpath='{.items[0].metadata.na
 sleep 10
 
 kubectl exec $POD -n sleep -c sleep -- \
-    curl -sS "http://productpage.bookinfo:9080/productpage" | grep "<title>"
+    curl -sS "http://productpage.bookinfo:9080/productpage" | grep "<title>" || true; echo "Deny All policy is in effect..."

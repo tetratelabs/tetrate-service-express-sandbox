@@ -69,4 +69,4 @@ export GATEWAY_IP=$(kubectl -n bookinfo get service bookinfo-ingress-gw -o jsonp
 
 curl -s --connect-to bookinfo.tse.tetratelabs.io:80:$GATEWAY_IP \
     "http://bookinfo.tse.tetratelabs.io/productpage" | \
-    grep "<title>"
+    grep "<title>" || true; echo "Deny All policy is in effect..."

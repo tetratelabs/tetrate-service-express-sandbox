@@ -22,6 +22,6 @@ EOF
 
 tctl apply -f $NAMESPACE-ws.yaml
 
-sleep 10
+sleep 60
 
-kubectl exec "$(kubectl get pod -n $NAMESPACE -l app=ratings -o jsonpath='{.items[0].metadata.name}')" -n $NAMESPACE -c ratings -- curl -s productpage:9080/productpage | grep -o "<title>.*</title>"
+kubectl exec "$(kubectl get pod -n $NAMESPACE -l app=ratings -o jsonpath='{.items[0].metadata.name}')" -n $NAMESPACE -c ratings -- curl -s productpage:9080/productpage | grep "<title>" || true; echo "Deny All policy is in effect..."

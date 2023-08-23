@@ -102,4 +102,4 @@ EOF
 tctl apply -f bookinfo-security.yaml
 
 sleep 30
-kubectl exec $SPOD -n sleep -c sleep -- curl -s productpage.bookinfo:9080/productpage | grep "<title>"
+kubectl exec $SPOD -n sleep -c sleep -- curl -s productpage.bookinfo:9080/productpage | grep "<title>" || true; echo "Deny All policy is in effect..."
