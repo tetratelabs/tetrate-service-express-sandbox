@@ -66,13 +66,8 @@ git clone https://github.com/tetrateio/tetrate-service-express-sandbox.git
         {
             "name": "demo1",
             "region": "us-west-1",
-            "version": "1.24"
-        },
-        {
-            "name": "demo2",
-            "region": "us-west-1",
-            "version": "1.24"
-        } 
+            "version": "1.26"
+        }
     ]
     }
 }
