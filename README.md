@@ -48,7 +48,7 @@ The `Makefile` in this directory provides ability to fast-forward to any point o
 1. Clone the repo
 
 ```bash
-git clone https://github.com/smarunich/tetrate-service-express-sandbox.git
+git clone https://github.com/tetrateio/tetrate-service-express-sandbox.git
 ```
 
 2. Copy `terraform.tfvars.json.sample` to the root directory as `terraform.tfvars.json`
@@ -66,13 +66,8 @@ git clone https://github.com/smarunich/tetrate-service-express-sandbox.git
         {
             "name": "demo1",
             "region": "us-west-1",
-            "version": "1.24"
-        },
-        {
-            "name": "demo2",
-            "region": "us-west-1",
-            "version": "1.24"
-        } 
+            "version": "1.26"
+        }
     ]
     }
 }
