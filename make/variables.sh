@@ -42,7 +42,7 @@ export NAME_PREFIX=$(echo ${TFVARS} | jq -r ".name_prefix")
 export GIT_REPO=$(echo ${TFVARS} | jq -r ".git_repo")
 
 if [ "${GIT_REPO}" = "null" ]; then
-    export GIT_REPO="https://github.com/smarunich/tetrate-service-express-sandbox"
+    export GIT_REPO="https://github.com/tetrateio/tetrate-service-express-sandbox"
 fi
 
 run_command_at_jumpbox() {
