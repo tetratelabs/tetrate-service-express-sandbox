@@ -90,7 +90,7 @@ resource "local_file" "aws_cleanup" {
     vpc_id        = aws_vpc.tetrate.id
     region        = data.aws_region.current.name
     registry_name = aws_ecr_repository.tetrate.name
-    name_prefix   = substr("${var.name_prefix}",0,length("${var.name_prefix}")-5) # removes random generated string on suffix
+    name_prefix   = regex("^\\w+-\\d","${var.name_prefix}")  
   })
   filename        = "${var.output_path}/${var.name_prefix}-aws-cleanup.sh"
   file_permission = "0755"
