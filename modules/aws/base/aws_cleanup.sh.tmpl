@@ -4,10 +4,24 @@ set -e
 export REGION="${region}"
 export VPC_ID="${vpc_id}"
 export REPO_PREFIX="${registry_name}"
+export NAME_PREFIX="${name_prefix}"
 
 echo 'Destroying ECR repositories...'
 for repo in $(aws ecr describe-repositories --region $REGION --query 'repositories[*].repositoryName' --no-paginate --output text); do
     [[ "$repo" =~ ^$REPO_PREFIX/.* ]] && aws ecr delete-repository --repository-name $repo --region $REGION --force; done
+
+echo 'Clean up of IAM Roles/Policies...'
+for role in $(aws iam list-roles --query "Roles[?RoleName.contains(@,'$NAME_PREFIX-$REGION-alb-ingress')].[RoleName]" --output text); do
+  for policyarn in $(aws iam list-attached-role-policies --role-name $role --output text --query "AttachedPolicies[].PolicyArn"); do
+    echo "Detact Policy $policyarn from Role $role"
+    aws iam detach-role-policy --role-name $role --policy-arn $policyarn
+    sleep 10
+    echo "Delete Policy $policyarn"
+    aws iam delete-policy --policy-arn $policyarn
+  done
+  echo "Delete Role $role"
+  aws iam delete-role --role-name $role
+done
 
 echo 'Destroying K8s NLBs...'
 for elbv2 in $(aws elbv2 describe-load-balancers --region $REGION --query 'LoadBalancers[?Type==`network` && VpcId==`${vpc_id}`].LoadBalancerArn' --output text); do
