@@ -15,7 +15,7 @@ deploy_infra_%:
 	@/bin/sh -c './make/infra_$*.sh deploy'
 
 .PHONY: deploy_addons
-deploy_addons: deploy_addons_load-balancer-controller deploy_addons_fluxcd deploy_addons_external-dns ## Deploy the default addons
+deploy_addons: deploy_addons_load-balancer-controller deploy_addons_fluxcd deploy_addons_external-dns deploy_addons_route53-controller## Deploy the default addons
 deploy_addons_%:
 	@/bin/sh -c './make/addons.sh deploy_$*'
 
