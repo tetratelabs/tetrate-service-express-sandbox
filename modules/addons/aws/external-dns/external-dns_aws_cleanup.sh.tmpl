@@ -2,7 +2,7 @@
 set -e
 
 
-export ZONE_NAME_PREFIX="${name_prefix}"
+export ZONE_NAME_PREFIX="${cluster_name}"
 
 echo 'Destroying Hosted zones...'
 zone_ids=$(aws route53 list-hosted-zones --query "HostedZones[?starts_with(Name, '$ZONE_NAME_PREFIX')].Id" --output text)

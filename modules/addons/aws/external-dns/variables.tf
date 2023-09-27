@@ -10,8 +10,8 @@ variable "output_path" {
 variable "region" {
 }
 
-variable "vpc_id" {
-}
+# variable "vpc_id" {
+# }
 
 variable "k8s_host" {
 }
@@ -29,17 +29,17 @@ variable "tags" {
 variable "dns_zone" {
 }
 
-variable "annotation_filter" {
-}
+# variable "annotation_filter" {
+# }
 
-variable "label_filter" {
-}
+# variable "label_filter" {
+# }
 
-variable "sources" {
-}
+# variable "sources" {
+# }
 
-variable "interval" {
-}
+# variable "interval" {
+# }
 
 locals {
   dns_name  = var.dns_zone
@@ -52,4 +52,20 @@ variable "oidc_provider_arn" {
 
 variable "cluster_oidc_issuer_url" {
   default = ""
+}
+
+variable "cluster_oidc_id" {
+  default = ""
+}
+
+variable "service_account_namespace" {
+    type = string
+    default = "istio-system"
+    description = "Kubernetes name space where the service account shall be created"
+}
+
+variable "service_account_name" {
+    type = string
+    default = "route53-controller"
+    description = "Name of Service Account in kubernetes cluster."
 }

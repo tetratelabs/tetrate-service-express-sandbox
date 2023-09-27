@@ -20,7 +20,7 @@ provider "kubernetes" {
 }
 
 module "load_balancer_controller" {
-  source                           = "git::https://github.com/DNXLabs/terraform-aws-eks-lb-controller.git"
+  source                           = "git::https://github.com/smarunich/terraform-aws-eks-lb-controller.git"
   helm_chart_version               = var.helm_chart_version
   cluster_identity_oidc_issuer     = var.cluster_oidc_issuer_url
   cluster_identity_oidc_issuer_arn = var.oidc_provider_arn

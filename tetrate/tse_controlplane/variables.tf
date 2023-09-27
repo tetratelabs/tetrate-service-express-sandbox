@@ -34,6 +34,9 @@ variable "tetrate" {
   default = {}
 }
 
+variable "external_dns_aws_dns_zone" {
+}
+
 locals {
   tetrate_defaults = {
     fqdn                = "demo"

@@ -32,6 +32,7 @@ deploy_action() {
   cluster_name=$(echo $AWS_K8S_CLUSTERS | jq -cr '.['$index'].name')
   region=$(echo $AWS_K8S_CLUSTERS | jq -cr '.['$index'].region')
   k8s_version=$(echo $AWS_K8S_CLUSTERS | jq -cr '.['$index'].version')
+  external_dns_zone=$(echo $AWS_K8S_CLUSTERS | jq -cr '.['$index'].external_dns_zone')
   if [[ "$cluster_name" == "null" ]]; then
     cluster_name=$NAME_PREFIX-$index-$region
   fi
@@ -53,6 +54,9 @@ case "${ACTION}" in
     ;;
   publish-service | 04-publish-service | 04)
     deploy_action "Publishing a Service" "publish-service" "04-publish-service.sh"
+    ;;
+  publish-service-r53 | 04-r53-publish-service | 04)
+    deploy_action "Publishing a Service via AWS Route53" "publish-service-r53" "04-r53-publish-service.sh"
     ;;
   publish-api | 05-publish-api | 05)
     deploy_action "Publishing an API from the OAS definition" "publish-api" "05-publish-api.sh"

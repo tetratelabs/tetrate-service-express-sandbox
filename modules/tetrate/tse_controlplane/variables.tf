@@ -48,3 +48,12 @@ variable "k8s_client_token" {
 
 variable "output_path" {
 }
+
+variable "external_dns_aws_dns_zone" {
+}
+
+variable "service_account_name" {
+    type = string
+    default = "route53-controller"
+    description = "Name of Service Account in kubernetes cluster."
+}

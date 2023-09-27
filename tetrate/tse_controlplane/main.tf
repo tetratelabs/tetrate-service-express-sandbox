@@ -38,4 +38,5 @@ module "tse_controlplane" {
   k8s_cluster_ca_certificate       = data.terraform_remote_state.infra.outputs.cluster_ca_certificate
   k8s_client_token                 = data.terraform_remote_state.k8s_auth.outputs.token
   output_path                      = var.output_path
+  external_dns_aws_dns_zone        = var.external_dns_aws_dns_zone
 }

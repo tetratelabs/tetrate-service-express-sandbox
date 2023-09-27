@@ -21,13 +21,14 @@ module "external_dns" {
   k8s_client_token           = data.terraform_remote_state.k8s_auth.outputs.token
   oidc_provider_arn          = data.terraform_remote_state.infra.outputs.oidc_provider_arn
   cluster_oidc_issuer_url    = data.terraform_remote_state.infra.outputs.cluster_oidc_issuer_url
-  vpc_id                     = data.terraform_remote_state.infra.outputs.vpc_id
+  cluster_oidc_id            = trimprefix (data.terraform_remote_state.infra.outputs.cluster_oidc_issuer_url, "https://")
+  # vpc_id                     = data.terraform_remote_state.infra.outputs.vpc_id
   region                     = var.region
   tags                       = local.default_tags
   dns_zone                   = var.external_dns_aws_dns_zone
-  sources                    = var.external_dns_sources
-  annotation_filter          = var.external_dns_annotation_filter
-  label_filter               = var.external_dns_label_filter
-  interval                   = var.external_dns_interval
+  # sources                    = var.external_dns_sources
+  # annotation_filter          = var.external_dns_annotation_filter
+  # label_filter               = var.external_dns_label_filter
+  # interval                   = var.external_dns_interval
   output_path                = var.output_path
 }

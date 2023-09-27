@@ -1,6 +1,9 @@
 variable "cluster_id" {
 }
 
+# variable "cluster_name" {
+# }
+
 variable "name_prefix" {
 }
 
@@ -52,21 +55,21 @@ locals {
   default_tags = merge(local.tags, var.tags)
 }
 
-variable "external_dns_annotation_filter" {
-  default = ""
-}
+# variable "external_dns_annotation_filter" {
+#   default = ""
+# }
 
-variable "external_dns_label_filter" {
-  default = ""
-}
+# variable "external_dns_label_filter" {
+#   default = ""
+# }
 
-variable "external_dns_sources" {
-  default = "service"
-}
+# variable "external_dns_sources" {
+#   default = "service"
+# }
 
-variable "external_dns_interval" {
-  default = "5s"
-}
+# variable "external_dns_interval" {
+#   default = "5s"
+# }
 
 variable "external_dns_aws_dns_zone" {
 }

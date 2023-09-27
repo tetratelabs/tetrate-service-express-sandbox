@@ -15,7 +15,7 @@ deploy_infra_%:
 	@/bin/sh -c './make/infra_$*.sh deploy'
 
 .PHONY: deploy_addons
-deploy_addons: deploy_addons_load-balancer-controller deploy_addons_fluxcd deploy_addons_external-dns deploy_addons_route53-controller## Deploy the default addons
+deploy_addons: deploy_addons_load-balancer-controller deploy_addons_fluxcd deploy_addons_external-dns #deploy_addons_route53-controller## Deploy the default addons
 deploy_addons_%:
 	@/bin/sh -c './make/addons.sh deploy_$*'
 
@@ -34,6 +34,7 @@ demo_01-deploy-application: demo_01-deploy-application ## Deploy the demo applic
 demo_02-mtls: demo_01-deploy-application demo_02-mtls ## Lunch the mTLS demo
 demo_03-zero-trust: demo_01-deploy-application demo_03-zero-trust ## Lunch the Zero Trust demo 
 demo_04-publish-service: demo_01-deploy-application demo_04-publish-service ## Lunch the Service Publishing demo
+#demo_04-r53-publish-service: demo_01-deploy-application demo_04-r53-publish-service ## Lunch the Service Publishing demo
 demo_05-publish-api: demo_01-deploy-application demo_05-publish-api ## Lunch the API Publishing demo
 demo_all: demo_01-deploy-application demo_02-mtls demo_03-zero-trust demo_04-publish-service demo_05-publish-api ## Setup all demos
 demo_%:
@@ -43,7 +44,7 @@ demo_%:
 destroy: destroy_infra destroy_local ## Destroy the complete demo stack
 
 .PHONY: destroy_addons
-destroy_addons: destroy_addons_external-dns ## Destroy the infra-integrated addons
+destroy_addons: destroy_addons_external-dns destroy_addons_load-balancer-controller## Destroy the infra-integrated addons
 destroy_addons_%:
 	@/bin/sh -c './make/addons.sh destroy_$*'
 
