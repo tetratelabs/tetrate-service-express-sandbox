@@ -70,10 +70,9 @@ resource "aws_iam_policy" "policy_service_account" {
 
 resource "aws_iam_role" "role_service_account" {
     name = "${var.cluster_name}-iamserviceaccount-r53"
-    assume_role_policy = <<POLICY
-    {
-        "Version": "2012-10-17",
-        "Statement" : [
+    assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
             {
                 "Effect": "Allow",
                 "Principal": {
@@ -88,8 +87,7 @@ resource "aws_iam_role" "role_service_account" {
                 }
             }
         ]
-    }
-POLICY
+    })
 }
 
 resource "aws_iam_role_policy_attachment" "policy_attachment_service_account" {
@@ -101,9 +99,6 @@ resource "kubernetes_namespace" "istio_system" {
   metadata {
     name = var.service_account_namespace
   }
-  # lifecycle {
-  #   prevent_destroy = true
-  # }
 }
 
 
@@ -119,20 +114,12 @@ resource "kubernetes_service_account" "service_account" {
 }
 
 resource "local_file" "aws_cleanup" {
-  content = templatefile("${path.module}/external-dns_aws_cleanup.sh.tmpl", {
+  content = templatefile("${path.module}/route53-controller_aws_cleanup.sh.tmpl", {
     cluster_name = "${var.cluster_name}"
 })
-  filename        = "${var.output_path}/${var.cluster_name}-external-dns-aws-cleanup.sh"
+  filename        = "${var.output_path}/${var.cluster_name}-route53-controller-aws-cleanup.sh"
   file_permission = "0755"
 }
-
-# resource "local_file" "aws_cleanup" {
-#   content = templatefile("${path.module}/external-dns_aws_cleanup.sh.tmpl", {
-#     name_prefix = "eks-${regex(".+-", var.name_prefix)}"
-#   })
-#   filename        = "${var.output_path}/${var.name_prefix}-external-dns-aws-cleanup.sh"
-#   file_permission = "0755"
-# }
 
 resource "null_resource" "aws_cleanup" {
   triggers = {
@@ -142,7 +129,7 @@ resource "null_resource" "aws_cleanup" {
 
   provisioner "local-exec" {
     when       = destroy
-    command    = "sh ${self.triggers.output_path}/${self.triggers.cluster_name}-external-dns-aws-cleanup.sh"
+    command    = "sh ${self.triggers.output_path}/${self.triggers.cluster_name}-route53-controller-aws-cleanup.sh"
     on_failure = continue
   }
 

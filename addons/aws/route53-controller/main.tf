@@ -12,8 +12,8 @@ data "terraform_remote_state" "k8s_auth" {
   }
 }
 
-module "external_dns" {
-  source                     = "../../../modules/addons/aws/external-dns"
+module "route53-controller" {
+  source                     = "../../../modules/addons/aws/route53-controller"
   name_prefix                = "${var.name_prefix}-${var.cluster_id}"
   cluster_name               = data.terraform_remote_state.infra.outputs.cluster_name
   k8s_host                   = data.terraform_remote_state.infra.outputs.host
@@ -22,13 +22,9 @@ module "external_dns" {
   oidc_provider_arn          = data.terraform_remote_state.infra.outputs.oidc_provider_arn
   cluster_oidc_issuer_url    = data.terraform_remote_state.infra.outputs.cluster_oidc_issuer_url
   cluster_oidc_id            = trimprefix (data.terraform_remote_state.infra.outputs.cluster_oidc_issuer_url, "https://")
-  # vpc_id                     = data.terraform_remote_state.infra.outputs.vpc_id
+  vpc_id                     = data.terraform_remote_state.infra.outputs.vpc_id
   region                     = var.region
   tags                       = local.default_tags
   dns_zone                   = var.external_dns_aws_dns_zone
-  # sources                    = var.external_dns_sources
-  # annotation_filter          = var.external_dns_annotation_filter
-  # label_filter               = var.external_dns_label_filter
-  # interval                   = var.external_dns_interval
   output_path                = var.output_path
 }

@@ -10,8 +10,8 @@ variable "output_path" {
 variable "region" {
 }
 
-# variable "vpc_id" {
-# }
+variable "vpc_id" {
+}
 
 variable "k8s_host" {
 }
@@ -28,18 +28,6 @@ variable "tags" {
 
 variable "dns_zone" {
 }
-
-# variable "annotation_filter" {
-# }
-
-# variable "label_filter" {
-# }
-
-# variable "sources" {
-# }
-
-# variable "interval" {
-# }
 
 locals {
   dns_name  = var.dns_zone
