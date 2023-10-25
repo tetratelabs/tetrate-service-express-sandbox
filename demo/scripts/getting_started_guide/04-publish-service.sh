@@ -52,7 +52,7 @@ spec:
   http:
   - name: bookinfo
     port: 80
-    hostname: bookinfo.tse.tetratelabs.io
+    hostname: bookinfo.$cluster_name.aws-ce.sandbox.tetrate.io
     routing:
       rules:
       - route:

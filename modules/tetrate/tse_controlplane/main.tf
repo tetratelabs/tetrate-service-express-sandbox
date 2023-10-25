@@ -70,11 +70,29 @@ resource "helm_release" "controlplane" {
   create_namespace    = true
   timeout             = 600
   values              = [data.local_file.helm_values.content]
+  #dns_aws_zone        = var.external_dns_aws_dns_zone
 
   set {
     name  = "image.registry"
     value = var.registry
   }
+
+# Conditional block for adding values related to external_dns_aws_dns_zone
+  dynamic "set" {
+    for_each = var.external_dns_aws_dns_zone != null ? [1] : []
+    content {
+      name  = "spec.providerSettings.route53.serviceAccountName"
+      value = "${var.service_account_name}"
+    }
+  }
+
+  # dynamic "set" {
+  #   for_each = var.external_dns_aws_dns_zone != null ? [1] : []
+  #   content {
+  #     name  = "spec.providerSettings.route53.domainFilter"
+  #     value = "${var.cluster_name}.${var.external_dns_aws_dns_zone}"
+  #   }
+  # }
 
   depends_on = [null_resource.jumpbox_tctl, data.local_file.helm_values]
 }
