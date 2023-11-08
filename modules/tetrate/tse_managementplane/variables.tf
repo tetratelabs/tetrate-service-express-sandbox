@@ -4,12 +4,6 @@ variable "tetrate_version" {
 variable "tetrate_helm_repository" {
 }
 
-variable "tetrate_helm_repository_username" {
-}
-
-variable "tetrate_helm_repository_password" {
-}
-
 variable "tetrate_password" {
 }
 

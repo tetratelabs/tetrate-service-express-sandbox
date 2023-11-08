@@ -20,15 +20,13 @@ provider "kubernetes" {
 }
 
 resource "helm_release" "managementplane" {
-  name                = "managementplane"
-  repository          = var.tetrate_helm_repository
-  repository_username = var.tetrate_helm_repository_username
-  repository_password = var.tetrate_helm_repository_password
-  chart               = "managementplane"
-  version             = var.tetrate_version
-  namespace           = "tse"
-  create_namespace    = true
-  timeout             = 1200
+  name             = "managementplane"
+  repository       = var.tetrate_helm_repository
+  chart            = "managementplane"
+  version          = var.tetrate_version
+  namespace        = "tse"
+  create_namespace = true
+  timeout          = 1200
 
   values = [templatefile("${path.module}/manifests/tetrate/managementplane-values.yaml.tmpl", {
     registry = var.registry

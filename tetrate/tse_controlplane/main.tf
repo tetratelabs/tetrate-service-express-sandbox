@@ -25,8 +25,6 @@ module "tse_controlplane" {
   cloud                            = var.k8s_cluster["cloud"]
   tetrate_version                  = local.tetrate.version
   tetrate_helm_repository          = local.tetrate.helm_repository
-  tetrate_helm_repository_username = local.tetrate.image_sync_username
-  tetrate_helm_repository_password = local.tetrate.image_sync_apikey
   tetrate_password                 = local.tetrate.password
   tetrate_managementplane_hostname = data.terraform_remote_state.tse_managementplane.outputs.tetrate_managementplane_hostname
   jumpbox_host                     = data.terraform_remote_state.infra.outputs.public_ip

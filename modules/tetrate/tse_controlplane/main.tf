@@ -60,16 +60,14 @@ data "local_file" "helm_values" {
 }
 
 resource "helm_release" "controlplane" {
-  name                = "controlplane"
-  repository          = var.tetrate_helm_repository
-  repository_username = var.tetrate_helm_repository_username
-  repository_password = var.tetrate_helm_repository_password
-  chart               = "controlplane"
-  version             = var.tetrate_version
-  namespace           = "istio-system"
-  create_namespace    = true
-  timeout             = 600
-  values              = [data.local_file.helm_values.content]
+  name             = "controlplane"
+  repository       = var.tetrate_helm_repository
+  chart            = "controlplane"
+  version          = var.tetrate_version
+  namespace        = "istio-system"
+  create_namespace = true
+  timeout          = 600
+  values           = [data.local_file.helm_values.content]
 
   set {
     name  = "image.registry"
