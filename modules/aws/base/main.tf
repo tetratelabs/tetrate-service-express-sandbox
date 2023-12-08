@@ -77,7 +77,8 @@ resource "null_resource" "aws_cleanup" {
 
   provisioner "local-exec" {
     when       = destroy
-    command    = "sh ${self.triggers.output_path}/${self.triggers.name_prefix}-aws-cleanup.sh"
+    # It takes about 800 seconds for EKS cluster to get de-provisioned to release holding resources for cleanup
+    command    = "sleep 960 && sh ${self.triggers.output_path}/${self.triggers.name_prefix}-aws-cleanup.sh"
     on_failure = continue
   }
 
@@ -90,7 +91,7 @@ resource "local_file" "aws_cleanup" {
     vpc_id        = aws_vpc.tetrate.id
     region        = data.aws_region.current.name
     registry_name = aws_ecr_repository.tetrate.name
-    name_prefix   = regex("^\\w+-\\d","${var.name_prefix}")  
+    name_prefix   = regex("^\\w+-\\d", "${var.name_prefix}")
   })
   filename        = "${var.output_path}/${var.name_prefix}-aws-cleanup.sh"
   file_permission = "0755"
