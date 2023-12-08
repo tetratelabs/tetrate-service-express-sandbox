@@ -77,6 +77,7 @@ resource "null_resource" "aws_cleanup" {
 
   provisioner "local-exec" {
     when       = destroy
+    # It takes about 800 seconds for EKS cluster to get de-provisioned to release holding resources for cleanup
     command    = "sleep 960 && sh ${self.triggers.output_path}/${self.triggers.name_prefix}-aws-cleanup.sh"
     on_failure = continue
   }
